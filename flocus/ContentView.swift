@@ -8,14 +8,15 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var showModal1 = false
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Button("Modal 1") {
+            showModal1 = true
         }
-        .padding()
+        .fullScreenCover(isPresented: $showModal1) {
+            Modal1Screen(showed: $showModal1)
+        }
     }
 }
 
