@@ -10,7 +10,23 @@ import SwiftUI
 
 struct HomeScreen: View {
     var body: some View {
-        Text("Home")
+        NavigationStack {
+            ZStack {
+                Color.black.opacity(0.1)
+                    .ignoresSafeArea(edges: .all)
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Image(systemName: "gear")
+
+                }
+                
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Image(systemName: "pencil")
+                    Image(systemName: "plus")
+                }
+            }
+        }
     }
 }
 
