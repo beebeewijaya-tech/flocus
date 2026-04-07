@@ -14,7 +14,7 @@ struct HomeScreen: View {
             ZStack {
                 Color("Secondary")
                     .ignoresSafeArea(edges: .all)
-                Image("cactus")
+                Image("Mascot")
                     .resizable()
                     .frame(width: 300, height: 300)
                     .aspectRatio(contentMode: .fit)
