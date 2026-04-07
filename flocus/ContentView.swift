@@ -8,14 +8,17 @@
 import SwiftUI
 
 struct ContentView: View {
+    /**
+     DUMMY FILES: for testing purposes
+     */
+    @StateObject private var timerViewModel: TimerViewModel = TimerViewModel()
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+            Button("Click me") {
+                timerViewModel.startTimer()
+            }
         }
-        .padding()
     }
 }
 
