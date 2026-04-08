@@ -1,5 +1,5 @@
 //
-//  FullModal.swift
+//  Modal.swift
 //  flocus
 //
 //  Created by Bee Wijaya on 07/04/26.
@@ -8,7 +8,8 @@
 import SwiftUI
 
 
-struct FullModal<Content: View>: View {
+
+struct Modal<Content: View>: View {
     @ViewBuilder var content: Content
     @Binding var isPresented: Bool // show modal or not
     var showCloseBtn: Bool = true // showing "X" btn
@@ -24,14 +25,14 @@ struct FullModal<Content: View>: View {
                         Button{
                             isPresented = false
                         } label: {
-                            Image(systemName: "xmark")
+                            Image(systemName: "chevron.left")
                                 .padding()
-                                .glassEffect()
                                 .foregroundColor(Color("Primary"))
                         }
                         Spacer()
                     }
                     .padding(.horizontal)
+                    .padding(.top, 40)
                 }
                 
                 
@@ -44,7 +45,7 @@ struct FullModal<Content: View>: View {
 
 
 #Preview {
-    FullModal(content: {
+    Modal(content: {
         VStack{}
     }, isPresented: .constant(true), showCloseBtn: true)
 }

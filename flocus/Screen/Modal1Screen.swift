@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct Modal1Screen: View {
-    @Binding var showed: Bool
+    @Binding var isPresented: Bool
     @State private var selected = 15
     
     var body: some View {
@@ -47,13 +47,13 @@ struct Modal1Screen: View {
             Spacer()
             
             PrimaryButton(title: "Start") {
-                showed = false
+                isPresented = false
             }
             .padding(.bottom,120)
-        }, showed: $showed)
+        }, isPresented: $isPresented)
     }
 }
 
 #Preview {
-    Modal1Screen(showed: .constant(true))
+    Modal1Screen(isPresented: .constant(true))
 }
