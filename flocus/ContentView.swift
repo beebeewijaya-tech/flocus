@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showModal1 = false
+    @State private var showModalExclude = false
     /**
      DUMMY FILES: for testing purposes
      */
@@ -43,7 +44,15 @@ struct ContentView: View {
                 showModal1 = true
             }
             .fullScreenCover(isPresented: $showModal1) {
-                Modal1Screen(showed: $showModal1)
+                ExcludeApp(isPresented: $showModal1)
+            }
+            
+            Button("Modal Exclude") {
+                showModalExclude = true
+            }
+            .sheet(isPresented: $showModalExclude) {
+                ExcludeApp(isPresented: $showModalExclude)
+                    .presentationDragIndicator(.visible)
             }
         }
     }
