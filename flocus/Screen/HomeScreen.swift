@@ -9,54 +9,121 @@ import SwiftUI
 
 
 struct HomeScreen: View {
+    @State private var showAddTask = false
+    @State private var taskInput = ""
+    @State private var tasks: [String] = []
+    
     var body: some View {
         NavigationStack {
             ZStack {
-                Color("Secondary")
-                    .ignoresSafeArea(edges: .all)
-                Image("Mascot")
-                    .resizable()
-                    .frame(width: 300, height: 300)
-                    .aspectRatio(contentMode: .fit)
-                    .padding(.bottom,220)
-                Image("bubblechat")
-                    .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 300, height: 100)
-                        .padding(.bottom,550
-                        )
-                Text("Add a task to get started")
-                    .padding(.bottom, 560)
-                    .foregroundColor(.black)
-                Text("Let's finish your tasks one at a time!")
-                    .font(.system(size: 18))
-                    .fontWeight(.bold)
-                    .padding(.top, 90)
+                Color("Secondary").ignoresSafeArea()
+                
+                if tasks.isEmpty {
                     
-            }
-            .toolbar {
-                
-                
-                ToolbarItem(placement: .topBarLeading) {
-                    Menu("", systemImage: "gear") {
-                        Button("Custom Avatar") {
+                    VStack(spacing: 0) {
+                        
+                        ZStack {
+                            Image("bubblechat")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 300, height: 100)
+                            Text("Add a task to get started")
+                                .font(.system(size: 16))
+                                .foregroundColor(Color("Primary"))
+                                .padding(.bottom, 6)
+                                .padding(.trailing, 6)
                         }
-                        Button("Custom Music") {
-                        }
-                        Button("Exclude Apps") {
-                        }
+                        .padding(.top, 40)
+                        
+                        Image("Mascot")
+                            .resizable()
+                            .frame(width: 300, height: 300)
+                            .padding(.top, -20)
+                        
+                        Text("Let's finish your tasks one at a time!")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundColor(Color("Primary"))
+                        
+                        Spacer()
                     }
                 }
-                
+                else {
+                    VStack(spacing: 0) {
+                        VStack(spacing: 4) {
+                            Text("Here's your task today!")
+                                .font(.system(size: 22, weight: .bold))
+                                .foregroundColor(Color("Primary"))
+                            Text("Start from the top and work your way down!")
+                                .font(.system(size: 14))
+                                .foregroundColor(Color("Primary").opacity(0.6))
+                                .padding(.top,5)
+                        }
+                        .padding(.top, 16)
+                        .padding(.bottom, 12)
+                        
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color.white)
+                            .overlay {
+                                ScrollView {
+                                    VStack(spacing: 0) {
+                                        ForEach(Array(tasks.enumerated()), id: \.offset) { index, task in
+                                            HStack {
+                                                Text("\(index + 1). \(task)")
+                                                    .foregroundColor(Color("Primary"))
+                                                Spacer()
+                                            }
+                                            .padding(.horizontal, 16)
+                                            .padding(.vertical, 14)
+                                            
+                                            if index < tasks.count - 1 {
+                                                Divider()
+                                                    .padding(.horizontal, 16)
+                                            }
+                                        }
+                                    }
+                                }
+                                .clipShape(RoundedRectangle(cornerRadius: 16))
+                            }
+                            .padding(.horizontal, 24)
+                        
+                        PrimaryButton(title: "Start Task") {
+                            // alert
+                        }
+                        .padding(.vertical, 16)
+                    }
+                }
+            }
+            
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Menu("", systemImage: "gear") {
+                        Button("Custom Avatar") {}
+                        Button("Custom Music") {}
+                        Button("Exclude Apps") {}
+                    }
+                }
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     Image(systemName: "pencil")
-                    Image(systemName: "plus")
+                    Button(action: { showAddTask = true }) {
+                        Image(systemName: "plus")
+                    }
                 }
+            }
+            .alert("Add your task!", isPresented: $showAddTask) {
+                TextField("Input Task", text: $taskInput)
+                Button("Cancel", role: .cancel) { taskInput = "" }
+                Button("Add") {
+                    if !taskInput.isEmpty {
+                        tasks.append(taskInput)
+                        taskInput = ""
+                    }
+                }
+            } message: {
+                Text("Each task should be one clear action.")
             }
         }
     }
 }
-
 
 #Preview {
     HomeScreen()
