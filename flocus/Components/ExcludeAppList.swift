@@ -8,19 +8,19 @@
 import SwiftUI
 
 struct ExcludeAppItem: View {
-    @Binding var exclude: Exclude
+    @Binding var appItem: AppItem
     
     var body: some View {
         HStack {
             HStack(spacing: 12) {
-                Image(systemName: exclude.image)
+                Image(systemName: appItem.image)
                     .font(.system(size: 56))
-                Text(exclude.name)
+                Text(appItem.name)
                     .font(.title3)
                     .fontWeight(.medium)
             }
 
-            Toggle("", isOn: $exclude.isEnabled)
+            Toggle("", isOn: $appItem.isEnabled)
                 .padding()
         }
         .listRowBackground(Color("Secondary"))

