@@ -12,7 +12,9 @@ struct HomeScreen_SwiftData: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \TaskModel.order) private var tasks: [TaskModel]
     @State private var showAddTask = false
+    @State private var showStartTask = false
     @State private var taskInput = ""
+    @State private var showModal1 = false
     
     
     var body: some View {
@@ -70,8 +72,9 @@ struct HomeScreen_SwiftData: View {
                                     VStack(spacing: 0) {
                                         ForEach(tasks) { task in
                                             HStack {
-                                                Text("\(task.order + 1). \(task.name)")
-                                                    .foregroundColor(Color("Primary"))
+                                                let displayText = "\(task.order + 1). \(task.name)"
+                                                Text(displayText)
+                                                .foregroundColor(Color("Primary"))
                                                 Spacer()
                                             }
                                             .padding(.horizontal, 16)
@@ -89,7 +92,7 @@ struct HomeScreen_SwiftData: View {
                             .padding(.horizontal, 24)
                         
                         PrimaryButton(title: "Start Task") {
-                            // alert
+                            showStartTask = true
                         }
                         .padding(.vertical, 16)
                     }
@@ -127,11 +130,24 @@ struct HomeScreen_SwiftData: View {
             } message: {
                 Text("Each task should be one clear action.")
             }
+            .alert("Continue?", isPresented: $showStartTask) {
+                Button("Cancel", role: .cancel) {showStartTask = false}
+                Button("Continue") {
+                    showModal1 = true
+                    showStartTask = false
+                }
+               
+            } message: {
+                Text("This action will lock all of your apps.")
+            }
+            .fullScreenCover(isPresented: $showModal1) {
+                Modal1Screen(isPresented: $showModal1)
+            }
         }
     }
 }
 
 #Preview {
     HomeScreen_SwiftData()
-        .modelContainer(for: TaskModel.self)
+        .modelContainer(for: TaskModel.self, inMemory: true)
 }

@@ -44,7 +44,7 @@ struct ContentView: View {
                 showModal1 = true
             }
             .fullScreenCover(isPresented: $showModal1) {
-                ExcludeApp(isPresented: $showModal1)
+                Modal1Screen(isPresented: $showModal1)
             }
             
             Button("Modal Exclude") {
