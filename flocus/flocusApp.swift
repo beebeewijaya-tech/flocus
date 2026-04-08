@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct flocusApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeScreen_SwiftData()
         }
+        .modelContainer(for: TaskModel.self)
     }
 }
