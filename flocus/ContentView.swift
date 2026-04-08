@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import FamilyControls
 
 struct ContentView: View {
     @State private var showModal1 = false
@@ -15,7 +16,8 @@ struct ContentView: View {
      */
     @State var duration: Int = 0
     @StateObject private var timerViewModel: TimerViewModel
-    
+    @StateObject private var familyControlViewModel: FamilyControlViewModel = FamilyControlViewModel()
+
     // persistence variable
     @AppStorage("timerEndDate") var timerEndDate: Double = 0
 
@@ -51,8 +53,17 @@ struct ContentView: View {
                 showModalExclude = true
             }
             .sheet(isPresented: $showModalExclude) {
-                ExcludeApp(isPresented: $showModalExclude)
+                ExcludeApp(isPresented: $showModalExclude, familyControlViewModel: familyControlViewModel)
                     .presentationDragIndicator(.visible)
+            }
+            
+            
+            Button("Modal Lock") {
+                familyControlViewModel.lockApps()
+            }
+            
+            Button("Modal Unlock") {
+                familyControlViewModel.unlockApps()
             }
         }
     }

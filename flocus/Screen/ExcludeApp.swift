@@ -6,23 +6,14 @@
 //
 
 import SwiftUI
-
-struct Exclude: Identifiable {
-    var id: UUID = UUID()
-    var name: String
-    var isEnabled: Bool
-    var image: String
-}
+import FamilyControls
 
 
 struct ExcludeApp: View {
     @Binding var isPresented: Bool
     @State private var isEnabled: Bool = false
-    @State private var App = [
-        Exclude(name: "Safari", isEnabled: false, image: "square.and.arrow.up.circle"),
-        Exclude(name: "Safari", isEnabled: false, image: "square.and.arrow.up.circle"),
-        Exclude(name: "Safari", isEnabled: false, image: "square.and.arrow.up.circle"),
-    ]
+    @ObservedObject var familyControlViewModel: FamilyControlViewModel
+    @State var showModalExclude: Bool = false
 
     var body: some View {
         Modal(content: {
@@ -35,20 +26,35 @@ struct ExcludeApp: View {
                 }
                 .padding(.top,20)
 
-                List {
-                    ForEach(App.indices, id: \.self) { index in
-                        ExcludeAppItem(exclude: $App[index])
-                    }
+                Image("Mascot")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 100)
+                
+                Text("\(familyControlViewModel.selection.applications.count) app(s) allowed")
+                    .font(.title)
+                    .foregroundStyle(Color("Primary"))
+                    .bold()
+                    .padding(.vertical, 20)
+                
+                PrimaryButton(title: "Allow app(s)") {
+                    showModalExclude = true
                 }
-                .listStyle(.plain)
-                .padding()
+                .familyActivityPicker(
+                    isPresented: $showModalExclude,
+                    selection: $familyControlViewModel.selection
+                )
             }
         },
           isPresented: $isPresented,
         )
+       
     }
 }
 
 #Preview {
-    ExcludeApp(isPresented: .constant(true))
+    ExcludeApp(
+        isPresented: .constant(true),
+        familyControlViewModel: FamilyControlViewModel()
+    )
 }
