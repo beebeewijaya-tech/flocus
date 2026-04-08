@@ -46,17 +46,10 @@ struct Modal1Screen: View {
             }
             Spacer()
             
-            Button(action: {
-                print("Durasi dipilih: \(selected) menit")
-                showed = false}) {
-                    Text("Start")
-                        .frame(width: 120,height: 35)
-                        .padding()
-                        .background(Color("Primary"))
-                        .foregroundColor(.white)
-                        .clipShape(Capsule())
-                }
-                .padding(.bottom,120)
+            PrimaryButton(title: "Start") {
+                showed = false
+            }
+            .padding(.bottom,120)
         }, showed: $showed)
     }
 }
