@@ -9,9 +9,11 @@ import SwiftUI
 import SwiftData
 
 struct HomeScreen: View {
+    // MARK: - Model
     @Environment(\.modelContext) private var context
     @Query(sort: \TaskModel.order) var tasks: [TaskModel]
 
+    // MARK: - State
     @State var showAddTask = false
     @State private var showStartTask = false
     @State private var showModal1 = false
@@ -21,8 +23,10 @@ struct HomeScreen: View {
     @State private var taskInput = ""
     @State var isEditingMode = false
     @State var editMode: EditMode = .inactive
+
+    // MARK: - ViewModel
     @StateObject private var familyControlViewModel = FamilyControlViewModel()
-    @State private var taskViewModel: TaskViewModel?
+    @EnvironmentObject var taskViewModel: TaskViewModel
 
     var body: some View {
         NavigationStack {
@@ -35,8 +39,8 @@ struct HomeScreen: View {
                     HomeTaskListView(
                         tasks: tasks,
                         isEditingMode: isEditingMode,
-                        onDelete: { taskViewModel?.deleteTask($0, tasks: tasks) },
-                        onMove: { taskViewModel?.moveTask(tasks: tasks, from: $0, to: $1) },
+                        onDelete: { taskViewModel.deleteTask($0, tasks: tasks) },
+                        onMove: { taskViewModel.moveTask(tasks: tasks, from: $0, to: $1) },
                         onStartTask: { showStartTask = true }
                     )
                 }
@@ -44,20 +48,17 @@ struct HomeScreen: View {
             .toolbar { homeToolbar }
             .environment(\.editMode, $editMode)
             .onChange(of: tasks) {
-                taskViewModel?.save()
+                taskViewModel.save()
                 if tasks.isEmpty {
                     isEditingMode = false
                     editMode = .inactive
                 }
             }
-            .onAppear {
-                taskViewModel = TaskViewModel(context: context)
-            }
             .alert("Add your task!", isPresented: $showAddTask) {
                 TextField("Input Task", text: $taskInput)
                 Button("Cancel", role: .cancel) { taskInput = "" }
                 Button("Add") {
-                    taskViewModel?.addTask(name: taskInput, count: tasks.count)
+                    taskViewModel.addTask(name: taskInput, count: tasks.count)
                     taskInput = ""
                 }
             } message: {
@@ -74,6 +75,7 @@ struct HomeScreen: View {
             }
             .fullScreenCover(isPresented: $showModal1) {
                 PickTimerScreen(isPresented: $showModal1, familyControlViewModel: familyControlViewModel)
+                    .environmentObject(taskViewModel)
             }
             .sheet(isPresented: $showCustomAvatar) {
                 CustomAvatarScreen(isPresented: $showCustomAvatar)
@@ -97,18 +99,8 @@ struct HomeScreen: View {
 struct HomeEmptyView: View {
     var body: some View {
         VStack(spacing: 0) {
-            ZStack {
-                Image("bubblechat")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 300, height: 100)
-                Text("Add a task to get started")
-                    .font(.system(size: 16))
-                    .foregroundColor(Color("Primary"))
-                    .padding(.bottom, 6)
-                    .padding(.trailing, 6)
-            }
-            .padding(.top, 40)
+            MascotSpeechBubble(message: "Add a task to get started")
+                .padding(.top, 40)
 
             Image("Mascot")
                 .resizable()
@@ -135,15 +127,10 @@ struct HomeTaskListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            VStack(spacing: 4) {
-                Text("Here's your task today!")
-                    .font(.system(size: 22, weight: .bold))
-                    .foregroundColor(Color("Primary"))
-                Text("Start from the top and work your way down!")
-                    .font(.system(size: 14))
-                    .foregroundColor(Color("Primary").opacity(0.6))
-                    .padding(.top, 5)
-            }
+            SectionHeader(
+                title: "Here's your task today!",
+                subtitle: "Start from the top and work your way down!"
+            )
             .padding(.top, 16)
             .padding(.bottom, 12)
 

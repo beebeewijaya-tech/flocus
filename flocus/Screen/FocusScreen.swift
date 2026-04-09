@@ -6,28 +6,49 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FocusScreen: View {
+    // MARK: - Model
+    @Environment(\.modelContext) private var context
+    @Query(sort: \TaskModel.order) var tasks: [TaskModel]
+
+    // MARK: - Bindings
+
     @Binding var isPresented: Bool
     @Binding var pageState: PageState
+
+    // MARK: - State
+
     @State var showTaskFinished: Bool = false
     @State var abortText = ""
     @State var abortStyle: ButtonStyleVariant
     @State var longPressTask: Task<Void, Never>? = nil
     @State var showTimerEnded: Bool = false
+
+    // MARK: - ViewModels
+
     @StateObject var avatarViewModel: AvatarViewModel = AvatarViewModel()
     @ObservedObject var timerViewModel: TimerViewModel
+    @ObservedObject var taskViewModel: TaskViewModel
+    
+
+    // MARK: - Constants
+
     private let nanoseconds = 1_000_000_000
     private let timerAbort = 3
     private var initialAbortStyle: ButtonStyleVariant
     private var initialAbortTitle: String
-    
+
+    // MARK: - Init
+
     init(
         isPresented: Binding<Bool>,
         timerViewModel: TimerViewModel,
         abortText: String = "Abort",
         abortStyle: ButtonStyleVariant = .secondary,
-        pageState: Binding<PageState>
+        pageState: Binding<PageState>,
+        taskViewModel: TaskViewModel
     ) {
         self._isPresented = isPresented
         self._timerViewModel = ObservedObject(wrappedValue: timerViewModel)
@@ -36,16 +57,21 @@ struct FocusScreen: View {
         self.initialAbortTitle = abortText
         self.initialAbortStyle = abortStyle
         self._pageState = pageState
+        self._taskViewModel = ObservedObject(wrappedValue: taskViewModel)
     }
-    
+
+    // MARK: - Timer Actions
+
     func runTimer() {
         timerViewModel.startTimer()
     }
-    
+
     func stopTimer() {
         timerViewModel.stopTimer()
     }
-    
+
+    // MARK: - Abort Actions
+
     func abort() {
         abortText = "Hold to abort"
         self.stopTimer()
@@ -58,6 +84,8 @@ struct FocusScreen: View {
         abortStyle = initialAbortStyle
         abortText = initialAbortTitle
     }
+
+    // MARK: - Gestures
 
     var holdToAbortGesture: some Gesture {
         DragGesture(minimumDistance: 0)
@@ -81,39 +109,27 @@ struct FocusScreen: View {
                 resetAbort()
             }
     }
-    
+
+    // MARK: - Body
+
     var body: some View {
         VStack {
-            VStack(spacing: 4) {
-                Text("Current Task:")
-                    .font(.headline)
-                    .foregroundColor(Color("Primary"))
-                
-                Text("PR Sekolah")
-                    .font(.largeTitle)
-                    .padding(10)
-                    .bold()
-                    .foregroundColor(Color("Primary"))
-            }
-            .padding(.top, 70)
-            
-            
-            Text(timerViewModel.renderTimer())
-                .font(.system(size: 80))
-                .foregroundColor(.black)
-                .bold()
-            
+            CurrentTaskHeader(taskName: taskViewModel.getCurrentTask(tasks: tasks)?.name ?? "")
+                .padding(.top, 70)
+
+            TimerDisplay(time: timerViewModel.renderTimer())
+
             Image(avatarViewModel.getAvatar())
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 200)
-            
+
             VStack {
                 PrimaryButton(title: "Finish") {
                     showTaskFinished = true
                     self.stopTimer()
                 }
-                
+
                 if longPressTask != nil {
                     Text(abortText)
                         .font(.caption)
@@ -138,8 +154,15 @@ struct FocusScreen: View {
     }
 }
 
-
+// MARK: - Preview
 
 #Preview {
-    FocusScreen(isPresented: .constant(true), timerViewModel: TimerViewModel(seconds: 300, familyControlViewModel: FamilyControlViewModel()), pageState: .constant(.focused))
+    let container = try! ModelContainer(for: TaskModel.self)
+    let context = ModelContext(container)
+    FocusScreen(
+        isPresented: .constant(true),
+        timerViewModel: TimerViewModel(seconds: 300, familyControlViewModel: FamilyControlViewModel()),
+        pageState: .constant(.focused),
+        taskViewModel: TaskViewModel(context: context)
+    )
 }
