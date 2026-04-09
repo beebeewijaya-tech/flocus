@@ -11,7 +11,7 @@ import SwiftData
 struct PickTimerScreen: View {
     // MARK: - Model
     @Environment(\.modelContext) private var context
-    @Query(sort: \TaskModel.order) var tasks: [TaskModel]
+    @Query(sort: \TaskModel.createdAt) var tasks: [TaskModel]
     
     // MARK: - Binding
     @Binding var isPresented: Bool
@@ -21,19 +21,17 @@ struct PickTimerScreen: View {
     @State private var showFocusPage: Bool = false
 
     // MARK: - ViewModel
-    @StateObject var timerViewModel: TimerViewModel
-    @ObservedObject var familyControlViewModel: FamilyControlViewModel
+    @EnvironmentObject var timerViewModel: TimerViewModel
+    @EnvironmentObject var familyControlViewModel: FamilyControlViewModel
     @EnvironmentObject var taskViewModel: TaskViewModel
 
     
     // MARK: - Init
-    init(isPresented: Binding<Bool>, familyControlViewModel: FamilyControlViewModel) {
+    init(isPresented: Binding<Bool>) {
         self._isPresented = isPresented
-        self._familyControlViewModel = ObservedObject(initialValue: familyControlViewModel)
-        self._timerViewModel = StateObject(wrappedValue: TimerViewModel(seconds: 0, familyControlViewModel: familyControlViewModel))
     }
     
-    // MARK: - Function
+    // MARK: - Actions
     func setTimer() {
         let seconds = selected * 60
         self.timerViewModel.updateSeconds(seconds: seconds)
@@ -72,11 +70,7 @@ struct PickTimerScreen: View {
                 setTimer()
             }
             .fullScreenCover(isPresented: $showFocusPage, content: {
-                FocusNavigationScreen(
-                    isPresented: $showFocusPage,
-                    timerViewModel: timerViewModel,
-                    taskViewModel: taskViewModel
-                )
+                FocusNavigationScreen(isPresented: $showFocusPage)
             })
             .padding(.bottom,120)
             
@@ -86,11 +80,11 @@ struct PickTimerScreen: View {
 
 #Preview {
     let container = try! ModelContainer(for: TaskModel.self)
+    let familyControlViewModel = FamilyControlViewModel()
 
-    PickTimerScreen(
-        isPresented: .constant(true),
-        familyControlViewModel: FamilyControlViewModel()
-    )
-    .environmentObject(TaskViewModel(context: container.mainContext))
-    .modelContainer(container)
+    PickTimerScreen(isPresented: .constant(true))
+        .environmentObject(TaskViewModel(context: container.mainContext))
+        .environmentObject(familyControlViewModel)
+        .environmentObject(TimerViewModel(seconds: 0, familyControlViewModel: familyControlViewModel))
+        .modelContainer(container)
 }

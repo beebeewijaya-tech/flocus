@@ -10,10 +10,16 @@ import FamilyControls
 
 
 struct ExcludeApp: View {
+    // MARK: - Binding
     @Binding var isPresented: Bool
+    
+    // MARK: - State
     @State private var isEnabled: Bool = false
-    @ObservedObject var familyControlViewModel: FamilyControlViewModel
     @State var showModalExclude: Bool = false
+    
+    // MARK: - ViewModel
+    @EnvironmentObject var familyControlViewModel: FamilyControlViewModel
+
 
     var body: some View {
         Modal(content: {
@@ -53,8 +59,6 @@ struct ExcludeApp: View {
 }
 
 #Preview {
-    ExcludeApp(
-        isPresented: .constant(true),
-        familyControlViewModel: FamilyControlViewModel()
-    )
+    ExcludeApp(isPresented: .constant(true))
+        .environmentObject(FamilyControlViewModel())
 }

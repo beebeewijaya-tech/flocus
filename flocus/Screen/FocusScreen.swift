@@ -11,7 +11,7 @@ import SwiftData
 struct FocusScreen: View {
     // MARK: - Model
     @Environment(\.modelContext) private var context
-    @Query(sort: \TaskModel.order) var tasks: [TaskModel]
+    @Query(sort: \TaskModel.createdAt) var tasks: [TaskModel]
 
     // MARK: - Bindings
 
@@ -29,8 +29,8 @@ struct FocusScreen: View {
     // MARK: - ViewModels
 
     @StateObject var avatarViewModel: AvatarViewModel = AvatarViewModel()
-    @ObservedObject var timerViewModel: TimerViewModel
-    @ObservedObject var taskViewModel: TaskViewModel
+    @EnvironmentObject var timerViewModel: TimerViewModel
+    @EnvironmentObject var taskViewModel: TaskViewModel
     
 
     // MARK: - Constants
@@ -44,20 +44,16 @@ struct FocusScreen: View {
 
     init(
         isPresented: Binding<Bool>,
-        timerViewModel: TimerViewModel,
         abortText: String = "Abort",
         abortStyle: ButtonStyleVariant = .secondary,
-        pageState: Binding<PageState>,
-        taskViewModel: TaskViewModel
+        pageState: Binding<PageState>
     ) {
         self._isPresented = isPresented
-        self._timerViewModel = ObservedObject(wrappedValue: timerViewModel)
         self._abortText = State(initialValue: abortText)
         self._abortStyle = State(initialValue: abortStyle)
         self.initialAbortTitle = abortText
         self.initialAbortStyle = abortStyle
         self._pageState = pageState
-        self._taskViewModel = ObservedObject(wrappedValue: taskViewModel)
     }
 
     // MARK: - Timer Actions
@@ -109,6 +105,16 @@ struct FocusScreen: View {
                 resetAbort()
             }
     }
+    
+    // MARK: - Task Actions
+    
+    func finishTask() {
+        if let curTask = taskViewModel.getCurrentTask(tasks: tasks) {
+            taskViewModel.markDoneTask(curTask)
+        }
+    }
+    
+    
 
     // MARK: - Body
 
@@ -141,7 +147,9 @@ struct FocusScreen: View {
             }
             .padding(.top, 50)
         }
-        .taskFinishedAlert(parentAlert: $isPresented, pageState: $pageState, showTaskFinished: $showTaskFinished)
+        .taskFinishedAlert(parentAlert: $isPresented, pageState: $pageState, showTaskFinished: $showTaskFinished) {
+            self.finishTask()
+        }
         .timesUpAlert(parentAlert: $isPresented, pageState: $pageState, showTimerEnded: $showTimerEnded)
         .onAppear {
             runTimer()
@@ -161,8 +169,6 @@ struct FocusScreen: View {
     let context = ModelContext(container)
     FocusScreen(
         isPresented: .constant(true),
-        timerViewModel: TimerViewModel(seconds: 300, familyControlViewModel: FamilyControlViewModel()),
         pageState: .constant(.focused),
-        taskViewModel: TaskViewModel(context: context)
     )
 }

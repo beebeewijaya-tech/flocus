@@ -11,7 +11,7 @@ import SwiftData
 struct HomeScreen: View {
     // MARK: - Model
     @Environment(\.modelContext) private var context
-    @Query(sort: \TaskModel.order) var tasks: [TaskModel]
+    @Query(sort: \TaskModel.createdAt) var tasks: [TaskModel]
 
     // MARK: - State
     @State var showAddTask = false
@@ -25,7 +25,7 @@ struct HomeScreen: View {
     @State var editMode: EditMode = .inactive
 
     // MARK: - ViewModel
-    @StateObject private var familyControlViewModel = FamilyControlViewModel()
+    @EnvironmentObject var familyControlViewModel: FamilyControlViewModel
     @EnvironmentObject var taskViewModel: TaskViewModel
 
     var body: some View {
@@ -37,10 +37,10 @@ struct HomeScreen: View {
                     HomeEmptyView()
                 } else {
                     HomeTaskListView(
-                        tasks: tasks,
+                        tasks: tasks.filter { task in !task.isDone },
                         isEditingMode: isEditingMode,
-                        onDelete: { taskViewModel.deleteTask($0, tasks: tasks) },
-                        onMove: { taskViewModel.moveTask(tasks: tasks, from: $0, to: $1) },
+                        onDelete: { task in taskViewModel.deleteTask(task) },
+                        onMove: { source, destination in taskViewModel.moveTask(tasks: tasks, from: source, to: destination) },
                         onStartTask: { showStartTask = true }
                     )
                 }
@@ -58,7 +58,7 @@ struct HomeScreen: View {
                 TextField("Input Task", text: $taskInput)
                 Button("Cancel", role: .cancel) { taskInput = "" }
                 Button("Add") {
-                    taskViewModel.addTask(name: taskInput, count: tasks.count)
+                    taskViewModel.addTask(name: taskInput)
                     taskInput = ""
                 }
             } message: {
@@ -74,8 +74,7 @@ struct HomeScreen: View {
                 Text("This action will lock all of your apps.")
             }
             .fullScreenCover(isPresented: $showModal1) {
-                PickTimerScreen(isPresented: $showModal1, familyControlViewModel: familyControlViewModel)
-                    .environmentObject(taskViewModel)
+                PickTimerScreen(isPresented: $showModal1)
             }
             .sheet(isPresented: $showCustomAvatar) {
                 CustomAvatarScreen(isPresented: $showCustomAvatar)
@@ -86,7 +85,7 @@ struct HomeScreen: View {
                     .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showExcludeApp) {
-                ExcludeApp(isPresented: $showExcludeApp, familyControlViewModel: familyControlViewModel)
+                ExcludeApp(isPresented: $showExcludeApp)
                     .presentationDragIndicator(.visible)
                     .presentationDetents([.medium])
             }
@@ -138,12 +137,12 @@ struct HomeTaskListView: View {
                 .fill(Color.white)
                 .overlay {
                     List {
-                        ForEach(tasks) { task in
+                        ForEach(Array(tasks.enumerated()), id: \.element.id) { index, task in
                             HStack {
                                 if isEditingMode {
                                     TextField("Edit Task", text: Binding(
                                         get: { task.name },
-                                        set: { task.name = $0 }
+                                        set: { newName in task.name = newName }
                                     ))
                                     .textFieldStyle(RoundedBorderTextFieldStyle())
 
@@ -154,7 +153,7 @@ struct HomeTaskListView: View {
                                             .foregroundStyle(.red)
                                     }
                                 } else {
-                                    Text("\(task.order + 1). \(task.name)")
+                                    Text("\(index + 1). \(task.name)")
                                         .foregroundColor(Color("Primary"))
                                     Spacer()
                                 }

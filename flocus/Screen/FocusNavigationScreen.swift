@@ -21,29 +21,18 @@ struct FocusNavigationScreen: View {
     @State var pageState: PageState = .focused
     
     // MARK: - ViewModel
-    @ObservedObject var timerViewModel: TimerViewModel
-    @ObservedObject var taskViewModel: TaskViewModel
+    @EnvironmentObject var timerViewModel: TimerViewModel
+    @EnvironmentObject var taskViewModel: TaskViewModel
 
-    init(
-        isPresented: Binding<Bool>,
-        timerViewModel: TimerViewModel,
-        taskViewModel: TaskViewModel
-    ) {
+    init(isPresented: Binding<Bool>) {
         self._isPresented = isPresented
-        self._timerViewModel = ObservedObject(wrappedValue: timerViewModel)
-        self._taskViewModel = ObservedObject(wrappedValue: taskViewModel)
     }
     
     var body: some View {
         FullModal(content: {
             switch pageState {
             case .focused:
-                renderFocusScreen(
-                    isPresented: $isPresented,
-                    timerViewModel: timerViewModel,
-                    pageState: $pageState,
-                    taskViewModel: taskViewModel
-                )
+                renderFocusScreen(isPresented: $isPresented, pageState: $pageState)
             case .rest:
                 renderRestScreen()
             }

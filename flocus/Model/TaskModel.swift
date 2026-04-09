@@ -13,12 +13,12 @@ class TaskModel {
     @Attribute(.unique) var id: UUID
     var name: String
     var isDone: Bool
-    var order: Int
-    
-    init(name: String, order: Int) {
+    var createdAt: Date
+
+    init(name: String) {
         self.id = UUID()
         self.name = name
         self.isDone = false
-        self.order = order
+        self.createdAt = .now
     }
 }
