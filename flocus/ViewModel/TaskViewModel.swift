@@ -23,16 +23,19 @@ class TaskViewModel: ObservableObject {
 
     // MARK: - CRUD
 
-    func addTask(name: String, count: Int) {
+    func addTask(name: String) {
         guard !name.isEmpty else { return }
-        let task = TaskModel(name: name, order: count)
-        context.insert(task)
+        context.insert(TaskModel(name: name))
     }
 
-    func deleteTask(_ task: TaskModel, tasks: [TaskModel]) {
+    func deleteTask(_ task: TaskModel) {
         context.delete(task)
         try? context.save()
-        reorderAfterDelete(tasks: tasks)
+    }
+
+    func markDoneTask(_ task: TaskModel) {
+        task.isDone.toggle()
+        try? context.save()
     }
 
     // MARK: - Ordering
@@ -40,16 +43,8 @@ class TaskViewModel: ObservableObject {
     func moveTask(tasks: [TaskModel], from source: IndexSet, to destination: Int) {
         var revised = tasks
         revised.move(fromOffsets: source, toOffset: destination)
-        for index in revised.indices {
-            revised[index].order = index
-        }
-        try? context.save()
-    }
-
-    func reorderAfterDelete(tasks: [TaskModel]) {
-        let sorted = tasks.sorted { $0.order < $1.order }
-        for index in sorted.indices {
-            sorted[index].order = index
+        revised.enumerated().forEach { index, task in
+            task.createdAt = Date(timeIntervalSinceNow: Double(index))
         }
         try? context.save()
     }
@@ -59,10 +54,10 @@ class TaskViewModel: ObservableObject {
     func save() {
         try? context.save()
     }
-    
+
     // MARK: - Get
-    
+
     func getCurrentTask(tasks: [TaskModel]) -> TaskModel? {
-        return tasks.first(where: { $0.isDone == false })
+        return tasks.first(where: { task in !task.isDone })
     }
 }

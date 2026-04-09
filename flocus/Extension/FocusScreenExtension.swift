@@ -13,14 +13,17 @@ extension View {
         parentAlert: Binding<Bool>,
         pageState: Binding<PageState>,
         showTaskFinished: Binding<Bool>,
+        action: @escaping () -> Void
     ) -> some View {
         self.alert("Task Finished!", isPresented: showTaskFinished) {
             Button("No Break", role: .cancel) {
                 showTaskFinished.wrappedValue = false
                 parentAlert.wrappedValue = false
+                action()
             }
             Button("Would you like to take a break?") {
                 pageState.wrappedValue = .rest
+                action()
             }
         } message: {
             Text("Would you like to take a break?")
