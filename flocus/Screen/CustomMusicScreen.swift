@@ -14,7 +14,7 @@ struct Track {
 }
 
 struct CustomMusicScreen: View {
-    
+    @Binding var isPresented: Bool
     @State var selectedTab = 0
     @State var selectedMusic: String = "BirdSound"
     @State var audioPlayer: AVAudioPlayer?
@@ -27,45 +27,47 @@ struct CustomMusicScreen: View {
     ]
     
     var body: some View {
-        VStack(spacing: 0) {
-            Text("Choose your Music!")
-                .font(.title)
-                .fontWeight(.bold)
-                .padding(.top, 50)
-            
-            TabView(selection: $selectedTab) {
-                ForEach(0..<4) { i in
-                    VStack {
-                        Image("\(musicList[i].fileName)")
-                            .resizable()
-                            .frame(width: 150, height: 150)
-                        
-                        Text(musicList[i].title)
-                            .font(.title2)
-                            .fontWeight(.semibold)
+        Modal(content: {
+            VStack(spacing: 0) {
+                Text("Choose your Music!")
+                    .font(.title)
+                    .foregroundColor(Color("Primary"))
+                    .fontWeight(.bold)
+                    
+                
+                TabView(selection: $selectedTab) {
+                    ForEach(0..<4) { i in
+                        VStack {
+                            Image("\(musicList[i].fileName)")
+                                .resizable()
+                                .frame(width: 150, height: 150)
+                            
+                            Text(musicList[i].title)
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                        }
+                        .tag(i)
                     }
-                    .tag(i)
                 }
-            }
-            .onChange(of: selectedTab) { newValue in
-                let newTrack = musicList[newValue]
-                if selectedMusic != newTrack.fileName {
-                    saveMusic(newTrack)
+                .onChange(of: selectedTab) { newValue in
+                    let newTrack = musicList[newValue]
+                    if selectedMusic != newTrack.fileName {
+                        saveMusic(newTrack)
+                    }
                 }
+                .frame(height: 300)
+                .padding(.bottom, 20)
+                .tabViewStyle(.page)
+                .indexViewStyle(.page(backgroundDisplayMode: .always))
+                
+                List(0..<4) { i in
+                    musicRow(track: musicList[i], idx: i)
+                }
+                .listStyle(.plain)
             }
-            .frame(height: 300)
-            .padding(.bottom, 20)
-            .tabViewStyle(.page)
-            .indexViewStyle(.page(backgroundDisplayMode: .always))
-            
-            List(0..<4) { i in
-                musicRow(track: musicList[i], idx: i)
-            }
-            .listStyle(.plain)
-        }
-        .onDisappear {
-            audioPlayer?.stop()
-        }
+            .onDisappear {
+                audioPlayer?.stop()
+            }}, isPresented: $isPresented)
     }
     
     func musicRow(track: Track, idx: Int) -> some View {
@@ -107,5 +109,5 @@ struct CustomMusicScreen: View {
 }
 
 #Preview {
-    CustomMusicScreen()
+    CustomMusicScreen(isPresented: .constant(true))
 }
