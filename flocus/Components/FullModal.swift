@@ -28,7 +28,7 @@ struct FullModal<Content: View>: View {
                             Image(systemName: "xmark")
                                 .padding()
                                 .glassEffect()
-                                .foregroundColor(colorScheme == .dark ? .white : .black)
+                                .foregroundColor(.black)
                         }
                         Spacer()
                     }

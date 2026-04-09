@@ -7,60 +7,139 @@
 
 import SwiftUI
 
-
 struct FocusScreen: View {
     @Binding var isPresented: Bool
-    @StateObject var timerViewModel: TimerViewModel
-    @StateObject var avatarViewModel: AvatarViewModel
+    @Binding var pageState: PageState
+    @State var showTaskFinished: Bool = false
+    @State var abortText = ""
+    @State var abortStyle: ButtonStyleVariant
+    @State var longPressTask: Task<Void, Never>? = nil
+    @State var showTimerEnded: Bool = false
+    @StateObject var avatarViewModel: AvatarViewModel = AvatarViewModel()
+    @ObservedObject var timerViewModel: TimerViewModel
+    private let nanoseconds = 1_000_000_000
+    private let timerAbort = 3
+    private var initialAbortStyle: ButtonStyleVariant
+    private var initialAbortTitle: String
     
-    init(isPresented: Binding<Bool>, seconds: Int) {
+    init(
+        isPresented: Binding<Bool>,
+        timerViewModel: TimerViewModel,
+        abortText: String = "Abort",
+        abortStyle: ButtonStyleVariant = .secondary,
+        pageState: Binding<PageState>
+    ) {
         self._isPresented = isPresented
-        self._timerViewModel = StateObject(wrappedValue: TimerViewModel(seconds: seconds))
-        self._avatarViewModel = StateObject(wrappedValue: AvatarViewModel())
+        self._timerViewModel = ObservedObject(wrappedValue: timerViewModel)
+        self._abortText = State(initialValue: abortText)
+        self._abortStyle = State(initialValue: abortStyle)
+        self.initialAbortTitle = abortText
+        self.initialAbortStyle = abortStyle
+        self._pageState = pageState
+    }
+    
+    func runTimer() {
+        timerViewModel.startTimer()
+    }
+    
+    func stopTimer() {
+        timerViewModel.stopTimer()
+    }
+    
+    func abort() {
+        abortText = "Hold to abort"
+        self.stopTimer()
+        isPresented = false
     }
 
-    var body: some View {
-        FullModal(content: {
-            VStack {
-                VStack(spacing: 4) {
-                    Text("Current Task:")
-                        .font(.headline)
-                        .foregroundColor(Color("Primary"))
+    private func resetAbort() {
+        longPressTask?.cancel()
+        longPressTask = nil
+        abortStyle = initialAbortStyle
+        abortText = initialAbortTitle
+    }
 
-                    Text("PR Sekolah")
-                        .font(.largeTitle)
-                        .padding(10)
-                        .bold()
-                        .foregroundColor(Color("Primary"))
-                }
-                .padding(.top, 70)
-                
-                
-                Text(timerViewModel.renderTimer())
-                    .font(.system(size: 80))
-                    .bold()
-                
-                Image(avatarViewModel.getAvatar())
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 200)
-                
-                VStack {
-                    PrimaryButton(title: "Finish") {
-                        
+    var holdToAbortGesture: some Gesture {
+        DragGesture(minimumDistance: 0)
+            .onChanged { _ in
+                guard longPressTask == nil else { return }
+                abortStyle = .danger
+                abortText = "Hold to abort"
+                longPressTask = Task { @MainActor in
+                    for count in stride(from: timerAbort, through: 1, by: -1) {
+                        abortText = "Abort in (\(count))s"
+                        try? await Task.sleep(nanoseconds: UInt64(nanoseconds))
+                        guard !Task.isCancelled else { return }
                     }
-                    
-                    PrimaryButton(title: "Abort", style: .secondary) {
-                        
-                    }
+                    abort()
+                    abortStyle = initialAbortStyle
+                    abortText = initialAbortTitle
+                    longPressTask = nil
                 }
-                .padding(.top, 50)
             }
-        }, isPresented: $isPresented, showCloseBtn: false)
+            .onEnded { _ in
+                resetAbort()
+            }
+    }
+    
+    var body: some View {
+        VStack {
+            VStack(spacing: 4) {
+                Text("Current Task:")
+                    .font(.headline)
+                    .foregroundColor(Color("Primary"))
+                
+                Text("PR Sekolah")
+                    .font(.largeTitle)
+                    .padding(10)
+                    .bold()
+                    .foregroundColor(Color("Primary"))
+            }
+            .padding(.top, 70)
+            
+            
+            Text(timerViewModel.renderTimer())
+                .font(.system(size: 80))
+                .foregroundColor(.black)
+                .bold()
+            
+            Image(avatarViewModel.getAvatar())
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 200)
+            
+            VStack {
+                PrimaryButton(title: "Finish") {
+                    showTaskFinished = true
+                    self.stopTimer()
+                }
+                
+                if longPressTask != nil {
+                    Text(abortText)
+                        .font(.caption)
+                        .foregroundColor(.red)
+                        .bold()
+                }
+                PrimaryButton(title: abortText, style: abortStyle) {}
+                    .simultaneousGesture(holdToAbortGesture)
+            }
+            .padding(.top, 50)
+        }
+        .taskFinishedAlert(parentAlert: $isPresented, pageState: $pageState, showTaskFinished: $showTaskFinished)
+        .timesUpAlert(parentAlert: $isPresented, pageState: $pageState, showTimerEnded: $showTimerEnded)
+        .onAppear {
+            runTimer()
+        }
+        .onChange(of: timerViewModel.seconds) { _, newValue in
+            if newValue == 0 {
+                showTimerEnded = true
+            }
+        }
     }
 }
 
 
+
 #Preview {
-    FocusScreen(isPresented: .constant(true), seconds: 300)
+    FocusScreen(isPresented: .constant(true), timerViewModel: TimerViewModel(seconds: 300, familyControlViewModel: FamilyControlViewModel()), pageState: .constant(.focused))
 }

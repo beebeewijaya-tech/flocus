@@ -18,17 +18,23 @@ class TimerViewModel: ObservableObject {
     var timer: AnyCancellable?
     var activity: Activity<TimerWidgetAttributes>?
     var timerLiveActivity: TimerLiveActivityService
+    var familyControlViewModel: FamilyControlViewModel
     
     // persistence variable
     @AppStorage("timerEndDate") var timerEndDate: Double = 0
     
     
-    init(seconds: Int) {
+    init(seconds: Int, familyControlViewModel: FamilyControlViewModel) {
         self.initialSeconds = seconds
         self.seconds = seconds
         self.timerLiveActivity = TimerLiveActivityService()
-        
+        self.familyControlViewModel = familyControlViewModel
+
         self.checkAndResumeTimer()
+    }
+    
+    func updateSeconds(seconds: Int) {
+        self.seconds = seconds
     }
     
     func renderTimer() -> String {
@@ -62,6 +68,7 @@ class TimerViewModel: ObservableObject {
             self.timerLiveActivity.startTimerLiveActivity(until: until)
             self.timerLiveActivity.observeLiveActivity()
             timerEndDate = until.timeIntervalSince1970
+            self.familyControlViewModel.lockApps()
             
             if timer == nil {
                 timer = Timer.publish(every: 1, on: .main, in: .common)
@@ -103,6 +110,8 @@ class TimerViewModel: ObservableObject {
         if self.seconds == 0 {
             self.seconds = self.initialSeconds
         }
+        
+        self.familyControlViewModel.unlockApps()
         
         Task {
             await self.timerLiveActivity.stopLiveActivity()

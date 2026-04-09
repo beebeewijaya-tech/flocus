@@ -190,7 +190,7 @@ struct HomeScreen: View {
                 Text("This action will lock all of your apps.")
             }
             .fullScreenCover(isPresented: $showModal1) {
-                Modal1Screen(isPresented: $showModal1)
+                PickTimerScreen(isPresented: $showModal1, familyControlViewModel: familyControlViewModel)
             }
             .sheet(isPresented: $showCustomAvatar) {
                 CustomAvatarScreen(isPresented: $showCustomAvatar)

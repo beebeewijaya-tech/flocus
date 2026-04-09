@@ -1,5 +1,5 @@
 //
-//  Modal1Screen.swift
+//  PickTimer.swift
 //  flocus
 //
 //  Created by Richie Daryl Kwenandar on 06/04/26.
@@ -8,10 +8,25 @@
 import SwiftUI
 
 
-struct Modal1Screen: View {
+struct PickTimerScreen: View {
     @Binding var isPresented: Bool
     @State private var selected = 15
+    @StateObject var timerViewModel: TimerViewModel
+    @State private var showFocusPage: Bool = false
+    @ObservedObject var familyControlViewModel: FamilyControlViewModel
     
+    init(isPresented: Binding<Bool>, familyControlViewModel: FamilyControlViewModel) {
+        self._isPresented = isPresented
+        self._familyControlViewModel = ObservedObject(initialValue: familyControlViewModel)
+        self._timerViewModel = StateObject(wrappedValue: TimerViewModel(seconds: 0, familyControlViewModel: familyControlViewModel))
+    }
+    
+    
+    func setTimer() {
+        let seconds = selected * 60
+        self.timerViewModel.updateSeconds(seconds: seconds)
+    }
+        
     var body: some View {
         FullModal(content: {
             VStack(spacing: 4) {
@@ -47,13 +62,18 @@ struct Modal1Screen: View {
             Spacer()
             
             PrimaryButton(title: "Start") {
-                isPresented = false
+                showFocusPage = true
+                setTimer()
             }
+            .fullScreenCover(isPresented: $showFocusPage, content: {
+                FocusNavigationScreen(isPresented: $showFocusPage, timerViewModel: timerViewModel)
+            })
             .padding(.bottom,120)
+            
         }, isPresented: $isPresented)
     }
 }
 
 #Preview {
-    Modal1Screen(isPresented: .constant(true))
+    PickTimerScreen(isPresented: .constant(true), familyControlViewModel: FamilyControlViewModel())
 }
