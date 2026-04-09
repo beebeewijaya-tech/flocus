@@ -9,6 +9,7 @@ import SwiftUI
 
 
 struct FullModal<Content: View>: View {
+    @Environment(\.colorScheme) var colorScheme
     @ViewBuilder var content: Content
     @Binding var isPresented: Bool // show modal or not
     var showCloseBtn: Bool = true // showing "X" btn
@@ -27,7 +28,7 @@ struct FullModal<Content: View>: View {
                             Image(systemName: "xmark")
                                 .padding()
                                 .glassEffect()
-                                .foregroundColor(Color("Primary"))
+                                .foregroundColor(colorScheme == .dark ? .white : .black)
                         }
                         Spacer()
                     }

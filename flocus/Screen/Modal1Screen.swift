@@ -33,6 +33,7 @@ struct Modal1Screen: View {
                 Picker("Min", selection: $selected) {
                     ForEach(15...45, id: \.self) { minute in
                         Text("\(minute)").tag(minute)
+                            .foregroundStyle(Color("Primary"))
                     }
                 }
                 .pickerStyle(.wheel)
@@ -41,7 +42,6 @@ struct Modal1Screen: View {
                 Text("Min")
                     .font(.headline)
                     .foregroundColor(Color("Primary"))
-                
                 
             }
             Spacer()
