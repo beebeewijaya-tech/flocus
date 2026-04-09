@@ -12,7 +12,7 @@ import SwiftData
 struct flocusApp: App {
     var body: some Scene {
         WindowGroup {
-            HomeScreen_SwiftData()
+            HomeScreen()
         }
         .modelContainer(for: TaskModel.self)
     }
