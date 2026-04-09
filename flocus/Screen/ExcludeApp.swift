@@ -20,11 +20,11 @@ struct ExcludeApp: View {
             VStack{
                 VStack(spacing: 4) {
                     Text("Exclude App")
-                        .font(.largeTitle)
+                        .font(.title)
+                        .foregroundColor(Color("Primary"))
                         .fontWeight(.bold)
-                        .foregroundColor(.black)
                 }
-                .padding(.top,20)
+        
 
                 Image("Mascot")
                     .resizable()
@@ -32,10 +32,10 @@ struct ExcludeApp: View {
                     .frame(width: 100, height: 100)
                 
                 Text("\(familyControlViewModel.selection.applications.count) app(s) allowed")
-                    .font(.title)
-                    .foregroundStyle(Color("Primary"))
-                    .bold()
-                    .padding(.vertical, 20)
+                    .font(.system(size: 20))
+                    .foregroundStyle(Color("Primary").opacity(0.6))
+                    .padding(.top, 10)
+                    .padding(.bottom,30)
                 
                 PrimaryButton(title: "Allow app(s)") {
                     showModalExclude = true

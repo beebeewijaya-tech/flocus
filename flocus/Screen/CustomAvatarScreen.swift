@@ -19,6 +19,7 @@ struct CustomAvatarScreen: View {
                 Text("Choose your Avatar!")
                     .font(.title)
                     .foregroundColor(Color("Primary"))
+                    .fontWeight(.bold)
                 
                 TabView(selection: $selectedTab) {
                     ForEach(0..<4) { i in

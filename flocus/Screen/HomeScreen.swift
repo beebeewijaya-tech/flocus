@@ -16,6 +16,7 @@ struct HomeScreen: View {
     @State private var showStartTask = false
     @State private var showModal1 = false
     @State private var showCustomAvatar = false
+    @State private var showCustomMusic = false
     @State private var showExcludeApp = false
     @State private var taskInput = ""
     @State private var isEditingMode = false
@@ -126,8 +127,8 @@ struct HomeScreen: View {
                     if !isEditingMode {
                         Menu("", systemImage: "gear") {
                             Button("Custom Avatar") {showCustomAvatar = true}
-                            Button("Custom Music") {}
-                            Button("Exclude Apps") {showExcludeApp = true}
+                            Button("Custom Music") {showCustomMusic = true}
+                            Button("Exclude App") {showExcludeApp = true}
                         }
                     }
                 }
@@ -194,9 +195,14 @@ struct HomeScreen: View {
                 CustomAvatarScreen(isPresented: $showCustomAvatar)
                     .presentationDragIndicator(.visible)
             }
+            .sheet(isPresented: $showCustomMusic) {
+                CustomMusicScreen(isPresented: $showCustomMusic)
+                    .presentationDragIndicator(.visible)
+            }
             .sheet(isPresented: $showExcludeApp) {
                 ExcludeApp(isPresented: $showExcludeApp, familyControlViewModel: familyControlViewModel)
                     .presentationDragIndicator(.visible)
+                    .presentationDetents([.medium])
             }
         }
     }
