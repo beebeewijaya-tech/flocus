@@ -10,13 +10,16 @@ import SwiftUI
 enum ButtonStyleVariant {
     case primary
     case secondary
-    
+    case danger
+
     var backgroundColor: Color {
         switch self {
         case .primary:
             return Color("Primary")
         case .secondary:
             return Color.white
+        case .danger:
+            return .red
         }
     }
     
@@ -26,12 +29,14 @@ enum ButtonStyleVariant {
             return .white
         case .secondary:
             return Color("Primary")
+        case .danger:
+            return .white
         }
     }
     
     var borderColor: Color {
         switch self {
-        case .primary:
+        case .primary, .danger:
             return .clear
         case .secondary:
             return Color("Primary")
@@ -40,7 +45,7 @@ enum ButtonStyleVariant {
     
     var borderWidth: CGFloat {
         switch self {
-        case .primary:
+        case .primary, .danger:
             return 0
         case .secondary:
             return 2
@@ -50,10 +55,11 @@ enum ButtonStyleVariant {
 }
 
 struct PrimaryButton: View {
-    let title: String
+    var title: String
     var style: ButtonStyleVariant = .primary
-    let action: () -> Void
-
+    var action: () -> Void
+    
+  
     var body: some View {
         Button(action: action) {
             Text(title)
@@ -72,5 +78,5 @@ struct PrimaryButton: View {
 
 
 #Preview {
-    PrimaryButton(title: "Click Me", style: .secondary) {}
+    PrimaryButton(title: "Click Me", style: .danger) {}
 }
