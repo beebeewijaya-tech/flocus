@@ -62,5 +62,5 @@ struct FocusScreen: View {
 
 
 #Preview {
-    Modal2Screen(isPresented: .constant(true), seconds: 300)
+    FocusScreen(isPresented: .constant(true), seconds: 300)
 }
