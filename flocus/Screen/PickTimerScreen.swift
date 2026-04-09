@@ -24,6 +24,7 @@ struct PickTimerScreen: View {
     @EnvironmentObject var timerViewModel: TimerViewModel
     @EnvironmentObject var familyControlViewModel: FamilyControlViewModel
     @EnvironmentObject var taskViewModel: TaskViewModel
+    @EnvironmentObject var avatarViewModel: AvatarViewModel
 
     
     // MARK: - Init
@@ -69,9 +70,13 @@ struct PickTimerScreen: View {
                 showFocusPage = true
                 setTimer()
             }
-            .fullScreenCover(isPresented: $showFocusPage, content: {
-                FocusNavigationScreen(isPresented: $showFocusPage)
-            })
+            .fullScreenCover(isPresented: $showFocusPage) {
+                FocusNavigationScreen(isPresented: $showFocusPage, isPickTimerPresented: $isPresented)
+                    .environmentObject(timerViewModel)
+                    .environmentObject(taskViewModel)
+                    .environmentObject(familyControlViewModel)
+                    .environmentObject(avatarViewModel)
+            }
             .padding(.bottom,120)
             
         }, isPresented: $isPresented)

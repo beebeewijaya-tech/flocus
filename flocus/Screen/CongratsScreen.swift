@@ -8,6 +8,14 @@
 import SwiftUI
 
 struct CongratsScreen: View {
+    @Binding var isPresented: Bool
+    @Binding var isPickTimerPresented: Bool
+    
+    init(isPresented: Binding<Bool>, isPickTimerPresented: Binding<Bool>) {
+        self._isPresented = isPresented
+        self._isPickTimerPresented = isPickTimerPresented
+    }
+    
     var body: some View {
         ZStack(alignment: .top) {
             Color("Secondary")
@@ -34,6 +42,8 @@ struct CongratsScreen: View {
                     .padding(.bottom, 29)
                 
                 Button("Back Home") {
+                    isPickTimerPresented = false
+                    isPresented = false
                 }
                 .frame(width: 100, height: 40)
                 .padding()
@@ -45,5 +55,5 @@ struct CongratsScreen: View {
     }
 }
 #Preview {
-    CongratsScreen()
+    CongratsScreen(isPresented: .constant(true), isPickTimerPresented: .constant(true))
 }

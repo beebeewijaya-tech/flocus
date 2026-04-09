@@ -12,36 +12,37 @@ struct FocusScreen: View {
     // MARK: - Model
     @Environment(\.modelContext) private var context
     @Query(sort: \TaskModel.createdAt) var tasks: [TaskModel]
-
+    
     // MARK: - Bindings
-
+    
     @Binding var isPresented: Bool
     @Binding var pageState: PageState
-
+    
     // MARK: - State
-
+    
     @State var showTaskFinished: Bool = false
     @State var abortText = ""
     @State var abortStyle: ButtonStyleVariant
     @State var longPressTask: Task<Void, Never>? = nil
     @State var showTimerEnded: Bool = false
-
+    @State var currentTask: String = ""
+    
     // MARK: - ViewModels
-
-    @StateObject var avatarViewModel: AvatarViewModel = AvatarViewModel()
+    
+    @EnvironmentObject var avatarViewModel: AvatarViewModel
     @EnvironmentObject var timerViewModel: TimerViewModel
     @EnvironmentObject var taskViewModel: TaskViewModel
     
-
+    
     // MARK: - Constants
-
+    
     private let nanoseconds = 1_000_000_000
     private let timerAbort = 3
     private var initialAbortStyle: ButtonStyleVariant
     private var initialAbortTitle: String
-
+    
     // MARK: - Init
-
+    
     init(
         isPresented: Binding<Bool>,
         abortText: String = "Abort",
@@ -55,34 +56,34 @@ struct FocusScreen: View {
         self.initialAbortStyle = abortStyle
         self._pageState = pageState
     }
-
+    
     // MARK: - Timer Actions
-
+    
     func runTimer() {
         timerViewModel.startTimer()
     }
-
+    
     func stopTimer() {
         timerViewModel.stopTimer()
     }
-
+    
     // MARK: - Abort Actions
-
+    
     func abort() {
         abortText = "Hold to abort"
         self.stopTimer()
         isPresented = false
     }
-
+    
     private func resetAbort() {
         longPressTask?.cancel()
         longPressTask = nil
         abortStyle = initialAbortStyle
         abortText = initialAbortTitle
     }
-
+    
     // MARK: - Gestures
-
+    
     var holdToAbortGesture: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { _ in
@@ -115,27 +116,48 @@ struct FocusScreen: View {
     }
     
     
-
+    func finishAllTasks() -> Bool {
+        // if tasks finished go to success
+        if taskViewModel.isEmpty(tasks: tasks) {
+            clearState()
+            pageState = .success
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    func clearState() {
+        timerViewModel.stopTimer()
+        taskViewModel.clear(tasks: tasks)
+    }
+    
+    
     // MARK: - Body
-
+    
     var body: some View {
         VStack {
-            CurrentTaskHeader(taskName: taskViewModel.getCurrentTask(tasks: tasks)?.name ?? "")
+            CurrentTaskHeader(taskName: currentTask)
                 .padding(.top, 70)
-
+            
             TimerDisplay(time: timerViewModel.renderTimer())
-
+            
             Image(avatarViewModel.getAvatar())
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(height: 200)
-
+            
             VStack {
                 PrimaryButton(title: "Finish") {
+                    // if finishAllTasks is "true" then just return
+                    self.finishTask()
+                    if finishAllTasks() { return }
+                    
                     showTaskFinished = true
                     self.stopTimer()
                 }
-
+                
                 if longPressTask != nil {
                     Text(abortText)
                         .font(.caption)
@@ -147,14 +169,16 @@ struct FocusScreen: View {
             }
             .padding(.top, 50)
         }
-        .taskFinishedAlert(parentAlert: $isPresented, pageState: $pageState, showTaskFinished: $showTaskFinished) {
-            self.finishTask()
-        }
+        .taskFinishedAlert(parentAlert: $isPresented, pageState: $pageState, showTaskFinished: $showTaskFinished)
         .timesUpAlert(parentAlert: $isPresented, pageState: $pageState, showTimerEnded: $showTimerEnded)
         .onAppear {
+            currentTask = taskViewModel.getCurrentTask(tasks: tasks)?.name ?? ""
             runTimer()
         }
         .onChange(of: timerViewModel.seconds) { _, newValue in
+            // if finishAllTasks is "true" then just return
+            if finishAllTasks() { return }
+            
             if newValue == 0 {
                 showTimerEnded = true
             }

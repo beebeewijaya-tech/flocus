@@ -6,19 +6,35 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct BreakScreen: View {
+    // MARK: - Model
+    @Environment(\.modelContext) private var context
+    @Query(sort: \TaskModel.createdAt) var tasks: [TaskModel]
     
-    @State private var timeRemaining = 1 * 60
-    @State private var timer: Timer? = nil
-    @State private var HomeScreen = false
+    // MARK: - State
+    @Binding var isPresented: Bool
     
-    var formattedTime: String {
-            let minutes = timeRemaining / 60
-            let seconds = timeRemaining % 60
-            return String(format: "%02d : %02d", minutes, seconds)
-        }
-
+    // MARK: - ViewModels
+    @EnvironmentObject var avatarViewModel: AvatarViewModel
+    @EnvironmentObject var timerViewModel: TimerViewModel
+    @EnvironmentObject var taskViewModel: TaskViewModel
+    
+    init(isPresented: Binding<Bool>) {
+        self._isPresented = isPresented
+    }
+    
+    // MARK: - Actions
+    func endBreak() {
+        timerViewModel.stopTimer()
+        isPresented = false
+    }
+    
+    func getCurrentTask() -> String {
+        return taskViewModel.getCurrentTask(tasks: tasks)?.name ?? ""
+    }
+    
     var body: some View {
         ZStack(alignment: .top) {
             Color("Secondary")
@@ -35,16 +51,19 @@ struct BreakScreen: View {
                 Image("Cactus")
                     .resizable()
                     .frame(width: 144, height: 157)
-                Text("Starting ")
+                Text("Starting \"\(getCurrentTask())\" at...")
                     .padding(.top, 35)
                     .font(.system(size: 24))
                     .foregroundStyle(Color("Primary"))
-                Text(formattedTime)
-                    .font(.system(size: 48, weight: .bold))
-                    .foregroundStyle(Color("Primary"))
+                
+                TimerDisplay(
+                    time: timerViewModel.renderTimer(),
+                    fontSize: 34,
+                    color: Color("Primary")
+                )
                 
                 Button("Start Early") {
-                    timer?.invalidate()
+                    endBreak()
                 }
                 .frame(width: 100, height: 40)
                 .padding()
@@ -54,21 +73,17 @@ struct BreakScreen: View {
             }
         }
         .onAppear {
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) {_ in
-                if timeRemaining > 0 {
-                    timeRemaining -= 1
-                } else {
-                    timer?.invalidate()
-                    HomeScreen = true
-                }
-            }
+            timerViewModel.updateSeconds(seconds: 10 * 60)
+            timerViewModel.startTimer()
         }
-        .onDisappear {
-            timer?.invalidate()
+        .onChange(of: timerViewModel.seconds) { _, newValue in
+            if newValue == 0 {
+                endBreak()
+            }
         }
     }
 }
 
 #Preview {
-    BreakScreen()
+    BreakScreen(isPresented: .constant(true))
 }

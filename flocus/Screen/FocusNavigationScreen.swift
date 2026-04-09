@@ -10,12 +10,14 @@ import SwiftUI
 enum PageState {
     case focused
     case rest // break
+    case success
 }
 
 /// FocusNavigationScreen will be the root of the FOCUS, to navigate between the focus state, break / rest state
 struct FocusNavigationScreen: View {
     // MARK: Binding
     @Binding var isPresented: Bool
+    @Binding var isPickTimerPresented: Bool
     
     // MARK: State
     @State var pageState: PageState = .focused
@@ -24,8 +26,9 @@ struct FocusNavigationScreen: View {
     @EnvironmentObject var timerViewModel: TimerViewModel
     @EnvironmentObject var taskViewModel: TaskViewModel
 
-    init(isPresented: Binding<Bool>) {
+    init(isPresented: Binding<Bool>, isPickTimerPresented: Binding<Bool>) {
         self._isPresented = isPresented
+        self._isPickTimerPresented = isPickTimerPresented
     }
     
     var body: some View {
@@ -34,7 +37,9 @@ struct FocusNavigationScreen: View {
             case .focused:
                 renderFocusScreen(isPresented: $isPresented, pageState: $pageState)
             case .rest:
-                renderRestScreen()
+                renderRestScreen(isPresented: $isPresented)
+            case .success:
+                renderSuccessScreen(isPresented: $isPresented, isPickTimerPresented: $isPickTimerPresented)
             }
         }, isPresented: $isPresented, showCloseBtn: false)
     }

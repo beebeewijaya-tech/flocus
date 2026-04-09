@@ -27,13 +27,15 @@ struct HomeScreen: View {
     // MARK: - ViewModel
     @EnvironmentObject var familyControlViewModel: FamilyControlViewModel
     @EnvironmentObject var taskViewModel: TaskViewModel
+    @EnvironmentObject var timerViewModel: TimerViewModel
+    @EnvironmentObject var avatarViewModel: AvatarViewModel
 
     var body: some View {
         NavigationStack {
             ZStack {
                 Color("Secondary").ignoresSafeArea()
 
-                if tasks.isEmpty {
+                if taskViewModel.isEmpty(tasks: tasks) {
                     HomeEmptyView()
                 } else {
                     HomeTaskListView(
@@ -49,7 +51,7 @@ struct HomeScreen: View {
             .environment(\.editMode, $editMode)
             .onChange(of: tasks) {
                 taskViewModel.save()
-                if tasks.isEmpty {
+                if tasks.isEmpty || tasks.allSatisfy({ task in task.isDone }) {
                     isEditingMode = false
                     editMode = .inactive
                 }
@@ -75,19 +77,26 @@ struct HomeScreen: View {
             }
             .fullScreenCover(isPresented: $showModal1) {
                 PickTimerScreen(isPresented: $showModal1)
+                    .environmentObject(timerViewModel)
+                    .environmentObject(taskViewModel)
+                    .environmentObject(familyControlViewModel)
+                    .environmentObject(avatarViewModel)
             }
             .sheet(isPresented: $showCustomAvatar) {
                 CustomAvatarScreen(isPresented: $showCustomAvatar)
                     .presentationDragIndicator(.visible)
+                    .environmentObject(avatarViewModel)
             }
             .sheet(isPresented: $showCustomMusic) {
                 CustomMusicScreen(isPresented: $showCustomMusic)
                     .presentationDragIndicator(.visible)
+                    .environmentObject(avatarViewModel)
             }
             .sheet(isPresented: $showExcludeApp) {
                 ExcludeApp(isPresented: $showExcludeApp)
                     .presentationDragIndicator(.visible)
                     .presentationDetents([.medium])
+                    .environmentObject(familyControlViewModel)
             }
         }
     }
