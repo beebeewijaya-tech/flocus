@@ -12,6 +12,23 @@ struct HomeScreen: View {
     @State private var showAddTask = false
     @State private var taskInput = ""
     @State private var tasks: [String] = []
+    @State private var isEditingMode = false
+    @State private var editMode: EditMode = .inactive
+//    @Environment(\.modelContext) private var modelContext
+//    @Query(sort: \TaskModel.order) private var tasks: [TaskModel]
+    
+    func moveTask(from source: IndexSet, to destination: Int) {
+        tasks.move(fromOffsets: source, toOffset: destination)
+    }
+    
+//    func moveTask(from source: IndexSet, to destination: Int) {
+//        var revisedTasks = tasks
+//        revisedTasks.move(fromOffsets: source, toOffset: destination)
+//
+//        for index in revisedTasks.indices {
+//            revisedTasks[index].order = index
+//        }
+//    }
     
     var body: some View {
         NavigationStack {
@@ -64,23 +81,57 @@ struct HomeScreen: View {
                         RoundedRectangle(cornerRadius: 16)
                             .fill(Color.white)
                             .overlay {
-                                ScrollView {
-                                    VStack(spacing: 0) {
-                                        ForEach(Array(tasks.enumerated()), id: \.offset) { index, task in
+                                List {
+                                        ForEach(tasks.indices, id: \.self) { index in
                                             HStack {
-                                                Text("\(index + 1). \(task)")
-                                                    .foregroundColor(Color("Primary"))
-                                                Spacer()
+                                                if isEditingMode {
+                                                    TextField ("Edit Task", text: $tasks[index])
+                                                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                                                    Button {
+                                                        tasks.remove(at: index)
+                                                    } label: {
+                                                        Image(systemName: "trash")
+                                                            .foregroundStyle(.red)
+                                                    }
+                                                }
+                                                else {
+                                                    Text("\(index + 1). \(tasks[index])")
+                                                        .foregroundColor(Color("Primary"))
+                                                    Spacer()
+                                                }
                                             }
-                                            .padding(.horizontal, 16)
-                                            .padding(.vertical, 14)
                                             
-                                            if index < tasks.count - 1 {
-                                                Divider()
-                                                    .padding(.horizontal, 16)
-                                            }
+//                                            .padding(.horizontal, 16)
+//                                            .padding(.vertical, 14)
+                                            
+//                                            if index < tasks.count - 1 {
+//                                                Divider()
+//                                                    .padding(.horizontal, 16)
+//                                            }
                                         }
-                                    }
+                                    
+//                                    ForEach(tasks) { task in
+//                                        HStack {
+//                                            if editMode == .active {
+//                                                TextField("Edit Task", text: Binding(
+//                                                    get: { task.name },
+//                                                    set: { task.name = $0 }
+//                                                ))
+//
+//                                                Button {
+//                                                    modelContext.delete(task)
+//                                                } label: {
+//                                                    Image(systemName: "trash")
+//                                                        .foregroundStyle(.red)
+//                                                }
+//
+//                                            } else {
+//                                                Text(task.name)
+//                                            }
+//                                        }
+//                                    }
+                                        .onMove(perform: moveTask)
+                                        .listStyle(.plain)
                                 }
                                 .clipShape(RoundedRectangle(cornerRadius: 16))
                             }
@@ -103,12 +154,30 @@ struct HomeScreen: View {
                     }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    Image(systemName: "pencil")
-                    Button(action: { showAddTask = true }) {
-                        Image(systemName: "plus")
+                    
+                    if isEditingMode {
+                        Button {
+                            isEditingMode = false
+                            editMode = .inactive
+                        } label: {
+                            Image(systemName: "checkmark")
+                        }
+                    } else {
+                        Button {
+                            isEditingMode = true
+                            editMode = .active
+                        
+                        } label: {
+                            Image(systemName: "pencil")
+                        }
+                        Button(action: { showAddTask = true }) {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }
+            .environment(\.editMode, $editMode)
+            
             .alert("Add your task!", isPresented: $showAddTask) {
                 TextField("Input Task", text: $taskInput)
                 Button("Cancel", role: .cancel) { taskInput = "" }
@@ -118,7 +187,20 @@ struct HomeScreen: View {
                         taskInput = ""
                     }
                 }
-            } message: {
+//                Button("Add") {
+//                    let trimmed = taskInput.trimmingCharacters(in: .whitespacesAndNewlines)
+//
+//                    if !trimmed.isEmpty {
+//                        let newTask = TaskModel(
+//                            name: trimmed,
+//                            order: tasks.count
+//                        )
+//                        modelContext.insert(newTask)
+//                        taskInput = ""
+//                    }
+//                }
+            }
+            message: {
                 Text("Each task should be one clear action.")
             }
         }
