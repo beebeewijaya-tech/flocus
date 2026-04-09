@@ -91,5 +91,6 @@ struct PickTimerScreen: View {
         .environmentObject(TaskViewModel(context: container.mainContext))
         .environmentObject(familyControlViewModel)
         .environmentObject(TimerViewModel(seconds: 0, familyControlViewModel: familyControlViewModel))
+        .environmentObject(AvatarViewModel())
         .modelContainer(container)
 }

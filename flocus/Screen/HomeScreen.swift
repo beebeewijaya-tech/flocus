@@ -191,6 +191,13 @@ struct HomeTaskListView: View {
 }
 
 #Preview {
+    let container = try! ModelContainer(for: TaskModel.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+    let familyControlViewModel = FamilyControlViewModel()
+
     HomeScreen()
-        .modelContainer(for: TaskModel.self, inMemory: true)
+        .modelContainer(container)
+        .environmentObject(familyControlViewModel)
+        .environmentObject(TaskViewModel(context: container.mainContext))
+        .environmentObject(TimerViewModel(seconds: 0, familyControlViewModel: familyControlViewModel))
+        .environmentObject(AvatarViewModel())
 }
