@@ -16,6 +16,8 @@ struct HomeScreen_SwiftData: View {
     @State private var taskInput = ""
     @State private var showModal1 = false
     @State private var showCustomAvatar = false
+    @State private var showExcludeApp = false
+    @StateObject private var familyControlViewModel: FamilyControlViewModel = FamilyControlViewModel()
     
     var body: some View {
         NavigationStack {
@@ -74,7 +76,7 @@ struct HomeScreen_SwiftData: View {
                                             HStack {
                                                 let displayText = "\(task.order + 1). \(task.name)"
                                                 Text(displayText)
-                                                .foregroundColor(Color("Primary"))
+                                                    .foregroundColor(Color("Primary"))
                                                 Spacer()
                                             }
                                             .padding(.horizontal, 16)
@@ -104,7 +106,7 @@ struct HomeScreen_SwiftData: View {
                     Menu("", systemImage: "gear") {
                         Button("Custom Avatar") {showCustomAvatar = true}
                         Button("Custom Music") {}
-                        Button("Exclude Apps") {}
+                        Button("Exclude Apps") {showExcludeApp = true}
                     }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
@@ -136,7 +138,7 @@ struct HomeScreen_SwiftData: View {
                     showModal1 = true
                     showStartTask = false
                 }
-               
+                
             } message: {
                 Text("This action will lock all of your apps.")
             }
@@ -145,6 +147,11 @@ struct HomeScreen_SwiftData: View {
             }
             .sheet(isPresented: $showCustomAvatar) {
                 CustomAvatarScreen(isPresented: $showCustomAvatar)
+                    .presentationDragIndicator(.visible)
+            }
+            .sheet(isPresented: $showExcludeApp) {
+                ExcludeApp(isPresented: $showExcludeApp, familyControlViewModel: familyControlViewModel)
+                    .presentationDragIndicator(.visible)
             }
         }
     }
