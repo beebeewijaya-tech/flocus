@@ -101,6 +101,7 @@ struct HomeScreen: View {
                                         .listRowBackground(Color.white)
                                         .listRowSeparatorTint(Color.gray.opacity(0.3))
                                         .listRowSeparator(tasks.first?.id == task.id ? .hidden : .visible, edges: .top)
+                                        .listRowSeparator(tasks.last?.id == task.id ? .hidden : .visible, edges: .bottom)
                                     }
                                     .onMove(perform: moveTask)
                                 }
