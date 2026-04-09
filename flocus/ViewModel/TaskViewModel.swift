@@ -9,13 +9,19 @@ import SwiftUI
 import SwiftData
 import Combine
 
+// MARK: - TaskViewModel
+
 @MainActor
 class TaskViewModel: ObservableObject {
     private let context: ModelContext
 
+    // MARK: - Init
+
     init(context: ModelContext) {
         self.context = context
     }
+
+    // MARK: - CRUD
 
     func addTask(name: String, count: Int) {
         guard !name.isEmpty else { return }
@@ -28,6 +34,8 @@ class TaskViewModel: ObservableObject {
         try? context.save()
         reorderAfterDelete(tasks: tasks)
     }
+
+    // MARK: - Ordering
 
     func moveTask(tasks: [TaskModel], from source: IndexSet, to destination: Int) {
         var revised = tasks
@@ -46,7 +54,15 @@ class TaskViewModel: ObservableObject {
         try? context.save()
     }
 
+    // MARK: - Persistence
+
     func save() {
         try? context.save()
+    }
+    
+    // MARK: - Get
+    
+    func getCurrentTask(tasks: [TaskModel]) -> TaskModel? {
+        return tasks.first(where: { $0.isDone == false })
     }
 }

@@ -10,10 +10,13 @@ import SwiftData
 
 @main
 struct flocusApp: App {
+    let container = try! ModelContainer(for: TaskModel.self)
+
     var body: some Scene {
         WindowGroup {
             HomeScreen()
+                .environmentObject(TaskViewModel(context: container.mainContext))
         }
-        .modelContainer(for: TaskModel.self)
+        .modelContainer(container)
     }
 }

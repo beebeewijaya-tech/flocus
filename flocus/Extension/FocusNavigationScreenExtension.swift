@@ -9,8 +9,18 @@ import SwiftUI
 
 
 extension FocusNavigationScreen {
-    func renderFocusScreen(isPresented: Binding<Bool>, timerViewModel: TimerViewModel, pageState: Binding<PageState>) -> some View {
-        FocusScreen(isPresented: isPresented, timerViewModel: timerViewModel, pageState: pageState)
+    func renderFocusScreen(
+        isPresented: Binding<Bool>,
+        timerViewModel: TimerViewModel,
+        pageState: Binding<PageState>,
+        taskViewModel: TaskViewModel
+    ) -> some View {
+        FocusScreen(
+            isPresented: isPresented,
+            timerViewModel: timerViewModel,
+            pageState: pageState,
+            taskViewModel: taskViewModel
+        )
     }
     
     
