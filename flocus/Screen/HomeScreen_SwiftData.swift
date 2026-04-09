@@ -11,13 +11,16 @@ import SwiftData
 struct HomeScreen_SwiftData: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \TaskModel.order) private var tasks: [TaskModel]
+    
     @State private var showAddTask = false
     @State private var showStartTask = false
-    @State private var taskInput = ""
     @State private var showModal1 = false
     @State private var showCustomAvatar = false
     @State private var showExcludeApp = false
-    @StateObject private var familyControlViewModel: FamilyControlViewModel = FamilyControlViewModel()
+    @State private var taskInput = ""
+    @State private var isEditingMode = false
+    @State private var editMode: EditMode = .inactive
+    @StateObject private var familyControlViewModel = FamilyControlViewModel()
     
     var body: some View {
         NavigationStack {
@@ -70,25 +73,36 @@ struct HomeScreen_SwiftData: View {
                         RoundedRectangle(cornerRadius: 16)
                             .fill(Color.white)
                             .overlay {
-                                ScrollView {
-                                    VStack(spacing: 0) {
-                                        ForEach(tasks) { task in
-                                            HStack {
-                                                let displayText = "\(task.order + 1). \(task.name)"
-                                                Text(displayText)
+                                List {
+                                    ForEach(tasks) { task in
+                                        HStack {
+                                            if isEditingMode {
+                                                TextField("Edit Task", text: Binding(
+                                                    get: { task.name },
+                                                    set: { task.name = $0 }
+                                                ))
+                                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                                
+                                                Button {
+                                                    context.delete(task)
+                                                } label: {
+                                                    Image(systemName: "trash")
+                                                        .foregroundStyle(.red)
+                                                }
+                                            } else {
+                                                Text("\(task.order + 1). \(task.name)")
                                                     .foregroundColor(Color("Primary"))
                                                 Spacer()
                                             }
-                                            .padding(.horizontal, 16)
-                                            .padding(.vertical, 14)
-                                            
-                                            if task.id != tasks.last?.id {
-                                                Divider()
-                                                    .padding(.horizontal, 16)
-                                            }
                                         }
+                                        .listRowBackground(Color.white)
+                                        .listRowSeparatorTint(Color.gray.opacity(0.3))
+                                        .listRowSeparator(task.id == tasks.first?.id ? .hidden : .visible, edges: .top)
                                     }
+                                    .onMove(perform: moveTask)
                                 }
+                                .listStyle(.plain)
+                                .scrollContentBackground(.hidden)           // ← hapus background abu default List
                                 .clipShape(RoundedRectangle(cornerRadius: 16))
                             }
                             .padding(.horizontal, 24)
@@ -110,12 +124,27 @@ struct HomeScreen_SwiftData: View {
                     }
                 }
                 ToolbarItemGroup(placement: .topBarTrailing) {
-                    Image(systemName: "pencil")
-                    Button(action: { showAddTask = true }) {
-                        Image(systemName: "plus")
+                    if isEditingMode {
+                        Button {
+                            isEditingMode = false
+                            editMode = .inactive
+                        } label: {
+                            Image(systemName: "checkmark")
+                        }
+                    } else {
+                        Button {
+                            isEditingMode = true
+                            editMode = .active
+                        } label: {
+                            Image(systemName: "pencil")
+                        }
+                        Button(action: { showAddTask = true }) {
+                            Image(systemName: "plus")
+                        }
                     }
                 }
             }
+            .environment(\.editMode, $editMode)
             .alert("Add your task!", isPresented: $showAddTask) {
                 TextField("Input Task", text: $taskInput)
                 Button("Cancel", role: .cancel) { taskInput = "" }
@@ -155,7 +184,18 @@ struct HomeScreen_SwiftData: View {
             }
         }
     }
+    
+    
+    func moveTask(from source: IndexSet, to destination: Int) {
+        var revisedTasks = tasks
+        revisedTasks.move(fromOffsets: source, toOffset: destination)
+        for index in revisedTasks.indices {
+            revisedTasks[index].order = index
+        }
+        try? context.save()
+    }
 }
+
 
 #Preview {
     HomeScreen_SwiftData()
