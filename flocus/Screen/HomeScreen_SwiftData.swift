@@ -15,7 +15,7 @@ struct HomeScreen_SwiftData: View {
     @State private var showStartTask = false
     @State private var taskInput = ""
     @State private var showModal1 = false
-    
+    @State private var showCustomAvatar = false
     
     var body: some View {
         NavigationStack {
@@ -102,7 +102,7 @@ struct HomeScreen_SwiftData: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Menu("", systemImage: "gear") {
-                        Button("Custom Avatar") {}
+                        Button("Custom Avatar") {showCustomAvatar = true}
                         Button("Custom Music") {}
                         Button("Exclude Apps") {}
                     }
@@ -142,6 +142,9 @@ struct HomeScreen_SwiftData: View {
             }
             .fullScreenCover(isPresented: $showModal1) {
                 Modal1Screen(isPresented: $showModal1)
+            }
+            .sheet(isPresented: $showCustomAvatar) {
+                CustomAvatarScreen(isPresented: $showCustomAvatar)
             }
         }
     }
