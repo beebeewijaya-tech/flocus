@@ -9,11 +9,13 @@ import SwiftUI
 
 struct TimerDisplay: View {
     let time: String
+    var fontSize: CGFloat = 80
+    var color: Color = .black
 
     var body: some View {
         Text(time)
-            .font(.system(size: 80))
-            .foregroundColor(.black)
+            .font(.system(size: fontSize))
+            .foregroundColor(color)
             .bold()
     }
 }

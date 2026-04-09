@@ -13,8 +13,11 @@ extension FocusNavigationScreen {
         FocusScreen(isPresented: isPresented, pageState: pageState)
     }
     
+    func renderRestScreen(isPresented: Binding<Bool>) -> some View {
+        return BreakScreen(isPresented: isPresented)
+    }
     
-    func renderRestScreen() -> some View {
-        return BreakScreen()
+    func renderSuccessScreen(isPresented: Binding<Bool>, isPickTimerPresented: Binding<Bool>) -> some View {
+        return CongratsScreen(isPresented: isPresented, isPickTimerPresented: isPickTimerPresented)
     }
 }

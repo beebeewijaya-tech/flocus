@@ -86,6 +86,7 @@ class TimerViewModel: ObservableObject {
     func stopTimer() {
         timer?.cancel()
         timer = nil
+        timerEndDate = 0
 
         if self.seconds == 0 {
             self.seconds = self.initialSeconds
@@ -104,13 +105,12 @@ class TimerViewModel: ObservableObject {
         let targetDate = Date(timeIntervalSince1970: timerEndDate)
         let remaining = Int(targetDate.timeIntervalSinceNow)
 
-        if remaining > 0 {
-            self.seconds = remaining
-            self.stopTimer()
-            self.startTimer()
-        } else {
-            self.stopTimer()
-            self.timerEndDate = 0
+        guard remaining > 0 else {
+            timerEndDate = 0
+            return
         }
+
+        self.seconds = remaining
+        self.startTimer()
     }
 }
