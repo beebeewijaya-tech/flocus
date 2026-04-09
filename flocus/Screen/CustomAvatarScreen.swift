@@ -10,8 +10,8 @@ import SwiftUI
 struct CustomAvatarScreen: View {
     @Binding var isPresented: Bool
     @State var selectedTab = 0
-    @State var selectedAvatar: String = "star.fill"
-    var imageList: Array = ["star.fill", "moon.fill", "circle.fill", "cloud.fill"]
+    @State var selectedAvatar: String = "Cactus"
+    var imageList: Array = ["Cactus", "Lavender", "PalmTree", "SnakePlant"]
     
     var body: some View {
         Modal(content: {
@@ -22,28 +22,30 @@ struct CustomAvatarScreen: View {
                 
                 TabView(selection: $selectedTab) {
                     ForEach(0..<4) { i in
-                        Image(systemName: imageList[i])
-                            .font(.system(size: 100))
+                        Image(imageList[i])
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 200)
                             .tag(i)
                     }
                 }
                 .onChange(of: selectedTab) { newValue in
                     selectedAvatar = imageList[newValue]
                 }
-                .frame(height: 300)
+                .frame(height: 280)
                 .padding(.bottom, 50)
                 .tabViewStyle(.page)
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
                 
                 VStack(spacing: 40) {
                     HStack(spacing: 40) {
-                        avatarButton(icon: "star.fill", idx: 0)
-                        avatarButton(icon: "moon.fill", idx: 1)
+                        avatarButton(icon: "Cactus", idx: 0)
+                        avatarButton(icon: "Lavender", idx: 1)
                     }
                     
                     HStack(spacing: 40) {
-                        avatarButton(icon: "circle.fill", idx: 2)
-                        avatarButton(icon: "cloud.fill", idx: 3)
+                        avatarButton(icon: "PalmTree", idx: 2)
+                        avatarButton(icon: "SnakePlant", idx: 3)
                     }
                 }
             }
@@ -55,9 +57,10 @@ struct CustomAvatarScreen: View {
             saveAvatar(icon)
             selectedTab = idx
         }) {
-            Image(systemName: icon)
-                .font(.system(size: 80))
-                .foregroundStyle(selectedAvatar == icon ? Color("Primary") : .gray)
+            Image(icon)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 110, height: 100)
                 .padding(10)
                 .background(
                     RoundedRectangle(cornerRadius: 15)
