@@ -9,7 +9,7 @@ import SwiftUI
 
 
 struct Modal2Screen: View {
-    @Binding var showed: Bool
+    @Binding var isPresented: Bool
 
     var body: some View {
         FullModal(content: {
@@ -19,11 +19,11 @@ struct Modal2Screen: View {
                     .bold()
                     .padding()
             }
-        }, showed: $showed, showCloseBtn: false)
+        }, isPresented: $isPresented, showCloseBtn: false)
     }
 }
 
 
 #Preview {
-    Modal2Screen(showed: .constant(true))
+    Modal2Screen(isPresented: .constant(true))
 }

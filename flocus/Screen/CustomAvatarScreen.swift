@@ -8,43 +8,46 @@
 import SwiftUI
 
 struct CustomAvatarScreen: View {
-    
+    @Binding var isPresented: Bool
     @State var selectedTab = 0
     @State var selectedAvatar: String = "star.fill"
     var imageList: Array = ["star.fill", "moon.fill", "circle.fill", "cloud.fill"]
     
     var body: some View {
-        VStack(spacing: 0) {
-            Text("Choose your Avatar!")
-                .font(.title)
-            
-            TabView(selection: $selectedTab) {
-                ForEach(0..<4) { i in
-                    Image(systemName: imageList[i])
-                        .font(.system(size: 100))
-                        .tag(i)
-                }
-            }
-            .onChange(of: selectedTab) { newValue in
-                selectedAvatar = imageList[newValue]
-            }
-            .frame(height: 300)
-            .padding(.bottom, 50)
-            .tabViewStyle(.page)
-            .indexViewStyle(.page(backgroundDisplayMode: .always))
-            
-            VStack(spacing: 40) {
-                HStack(spacing: 40) {
-                    avatarButton(icon: "star.fill", idx: 0)
-                    avatarButton(icon: "moon.fill", idx: 1)
-                }
+        Modal(content: {
+            VStack(spacing: 0) {
+                Text("Choose your Avatar!")
+                    .font(.title)
+                    .foregroundColor(Color("Primary"))
                 
-                HStack(spacing: 40) {
-                    avatarButton(icon: "circle.fill", idx: 2)
-                    avatarButton(icon: "cloud.fill", idx: 3)
+                TabView(selection: $selectedTab) {
+                    ForEach(0..<4) { i in
+                        Image(systemName: imageList[i])
+                            .font(.system(size: 100))
+                            .tag(i)
+                    }
+                }
+                .onChange(of: selectedTab) { newValue in
+                    selectedAvatar = imageList[newValue]
+                }
+                .frame(height: 300)
+                .padding(.bottom, 50)
+                .tabViewStyle(.page)
+                .indexViewStyle(.page(backgroundDisplayMode: .always))
+                
+                VStack(spacing: 40) {
+                    HStack(spacing: 40) {
+                        avatarButton(icon: "star.fill", idx: 0)
+                        avatarButton(icon: "moon.fill", idx: 1)
+                    }
+                    
+                    HStack(spacing: 40) {
+                        avatarButton(icon: "circle.fill", idx: 2)
+                        avatarButton(icon: "cloud.fill", idx: 3)
+                    }
                 }
             }
-        }
+        }, isPresented: $isPresented)
     }
     
     func avatarButton(icon: String, idx: Int) -> some View {
@@ -70,5 +73,5 @@ struct CustomAvatarScreen: View {
 }
 
 #Preview {
-    CustomAvatarScreen()
+    CustomAvatarScreen(isPresented: .constant(true))
 }
