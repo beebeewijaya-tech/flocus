@@ -85,5 +85,12 @@ struct BreakScreen: View {
 }
 
 #Preview {
+    let container = try! ModelContainer(for: TaskModel.self)
+    let familyControlViewModel = FamilyControlViewModel()
+
     BreakScreen(isPresented: .constant(true))
+        .environmentObject(TaskViewModel(context: container.mainContext))
+        .environmentObject(TimerViewModel(seconds: 300, familyControlViewModel: familyControlViewModel))
+        .environmentObject(AvatarViewModel())
 }
+

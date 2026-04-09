@@ -190,9 +190,14 @@ struct FocusScreen: View {
 
 #Preview {
     let container = try! ModelContainer(for: TaskModel.self)
-    let context = ModelContext(container)
+    let familyControlViewModel = FamilyControlViewModel()
+
     FocusScreen(
         isPresented: .constant(true),
         pageState: .constant(.focused),
     )
+    .environmentObject(familyControlViewModel)
+    .environmentObject(TimerViewModel(seconds: 25 * 60, familyControlViewModel: familyControlViewModel))
+    .environmentObject(TaskViewModel(context: container.mainContext))
+    .environmentObject(AvatarViewModel())
 }
