@@ -7,8 +7,13 @@
 
 import SwiftUI
 import SwiftData
+import AVFoundation
 
 struct FocusScreen: View {
+    // MARK: - Play Music
+    @AppStorage("selected_music_file") var selectedMusic: String = "BirdSound"
+    @State private var audioPlayer: AVAudioPlayer?
+    
     // MARK: - Model
     @Environment(\.modelContext) private var context
     @Query(sort: \TaskModel.createdAt) var tasks: [TaskModel]
@@ -133,6 +138,18 @@ struct FocusScreen: View {
         taskViewModel.clear(tasks: tasks)
     }
     
+    // MARK: - Play Music
+    func playBackgroundMusic() {
+        if let path = Bundle.main.path(forResource: selectedMusic, ofType: "mp3") {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: path))
+                audioPlayer?.numberOfLoops = -1
+                audioPlayer?.play()
+            } catch {
+                print("Playback error")
+            }
+        }
+    }
     
     // MARK: - Body
     
@@ -174,6 +191,10 @@ struct FocusScreen: View {
         .onAppear {
             currentTask = taskViewModel.getCurrentTask(tasks: tasks)?.name ?? ""
             runTimer()
+            playBackgroundMusic()
+        }
+        .onDisappear {
+            audioPlayer?.stop()
         }
         .onChange(of: timerViewModel.seconds) { _, newValue in
             // if finishAllTasks is "true" then just return
