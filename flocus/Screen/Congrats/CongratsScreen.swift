@@ -8,15 +8,21 @@
 import SwiftUI
 
 struct CongratsScreen: View {
-    @EnvironmentObject var avatarViewModel: AvatarViewModel
+    // MARK: - Binding
     @Binding var isPresented: Bool
     @Binding var isPickTimerPresented: Bool
     
+    // MARK: - ViewModel
+    @EnvironmentObject var avatarViewModel: AvatarViewModel
+    
+    
+    // MARK: - Init
     init(isPresented: Binding<Bool>, isPickTimerPresented: Binding<Bool>) {
         self._isPresented = isPresented
         self._isPickTimerPresented = isPickTimerPresented
     }
     
+    // MARK: - View
     var body: some View {
         ZStack(alignment: .top) {
             Color("Secondary")
@@ -45,7 +51,7 @@ struct CongratsScreen: View {
                     .foregroundStyle(Color("Primary"))
                     .padding(.bottom, 29)
                 
-                Button("Back Home") {
+                PrimaryButton(title: "Back Home") {
                     isPickTimerPresented = false
                     isPresented = false
                 }

@@ -24,9 +24,13 @@ class FamilyControlViewModel: ObservableObject {
     controlling the LOCKING APP implementation
     we use ManagedSettings and also FamilyControl library to do the task of locking
      */
+    
+    //MARK: - Properties
+
     @Published var selection = FamilyActivitySelection(includeEntireCategory: true)
     private let store = ManagedSettingsStore()
     
+    // MARK: - Init
     init() {
         Task {
             do {
@@ -37,6 +41,9 @@ class FamilyControlViewModel: ObservableObject {
             }
         }
     }
+    
+    
+    // MARK: - Actions
     
     func lockApps() {
         // we will lock all app except what user "select" on the picker

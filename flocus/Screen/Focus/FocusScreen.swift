@@ -62,7 +62,7 @@ struct FocusScreen: View {
         self._pageState = pageState
     }
     
-    // MARK: - Timer Actions
+    // MARK: - Actions
     
     func runTimer() {
         timerViewModel.startTimer()
@@ -71,9 +71,7 @@ struct FocusScreen: View {
     func stopTimer() {
         timerViewModel.stopTimer()
     }
-    
-    // MARK: - Abort Actions
-    
+        
     func abort() {
         abortText = "Hold to abort"
         self.stopTimer()
@@ -86,10 +84,8 @@ struct FocusScreen: View {
         abortStyle = initialAbortStyle
         abortText = initialAbortTitle
     }
-    
-    // MARK: - Gestures
-    
-    var holdToAbortGesture: some Gesture {
+        
+    private var holdToAbortGesture: some Gesture {
         DragGesture(minimumDistance: 0)
             .onChanged { _ in
                 guard longPressTask == nil else { return }
@@ -111,17 +107,15 @@ struct FocusScreen: View {
                 resetAbort()
             }
     }
-    
-    // MARK: - Task Actions
-    
-    func finishTask() {
+        
+    private func finishTask() {
         if let curTask = taskViewModel.getCurrentTask(tasks: tasks) {
             taskViewModel.markDoneTask(curTask)
         }
     }
     
     
-    func finishAllTasks() -> Bool {
+    private func finishAllTasks() -> Bool {
         // if tasks finished go to success
         if taskViewModel.isEmpty(tasks: tasks) {
             clearState()
@@ -138,7 +132,6 @@ struct FocusScreen: View {
         taskViewModel.clear(tasks: tasks)
     }
     
-    // MARK: - Play Music
     func playBackgroundMusic() {
         if let path = Bundle.main.path(forResource: selectedMusic, ofType: "mp3") {
             do {
@@ -188,6 +181,7 @@ struct FocusScreen: View {
         }
         .taskFinishedAlert(parentAlert: $isPresented, pageState: $pageState, showTaskFinished: $showTaskFinished)
         .timesUpAlert(parentAlert: $isPresented, pageState: $pageState, showTimerEnded: $showTimerEnded)
+        // MARK: - Event Lifecycle
         .onAppear {
             currentTask = taskViewModel.getCurrentTask(tasks: tasks)?.name ?? ""
             runTimer()
