@@ -42,26 +42,27 @@ class TaskViewModel: ObservableObject {
         tasks.forEach { task in context.delete(task) }
         try? context.save()
     }
-
+    
     // MARK: - Ordering
-
+    
     func moveTask(tasks: [TaskModel], from source: IndexSet, to destination: Int) {
         var revised = tasks
         revised.move(fromOffsets: source, toOffset: destination)
+        let base = Date(timeIntervalSince1970: 0)
         revised.enumerated().forEach { index, task in
-            task.createdAt = Date(timeIntervalSinceNow: Double(index))
+            task.createdAt = base.addingTimeInterval(Double(index))
         }
         try? context.save()
     }
-
+    
     // MARK: - Persistence
-
+    
     func save() {
         try? context.save()
     }
-
+    
     // MARK: - Get
-
+    
     func getCurrentTask(tasks: [TaskModel]) -> TaskModel? {
         return tasks.first(where: { task in !task.isDone })
     }

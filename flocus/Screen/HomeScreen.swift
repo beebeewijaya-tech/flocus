@@ -29,6 +29,7 @@ struct HomeScreen: View {
     @EnvironmentObject var taskViewModel: TaskViewModel
     @EnvironmentObject var timerViewModel: TimerViewModel
     @EnvironmentObject var avatarViewModel: AvatarViewModel
+    
 
     var body: some View {
         NavigationStack {
@@ -51,6 +52,12 @@ struct HomeScreen: View {
             .environment(\.editMode, $editMode)
             .onChange(of: tasks) {
                 taskViewModel.save()
+                if tasks.isEmpty || tasks.allSatisfy({ task in task.isDone }) {
+                    isEditingMode = false
+                    editMode = .inactive
+                }
+            }
+            .onAppear {
                 if tasks.isEmpty || tasks.allSatisfy({ task in task.isDone }) {
                     isEditingMode = false
                     editMode = .inactive

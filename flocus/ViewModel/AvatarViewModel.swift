@@ -15,4 +15,8 @@ class AvatarViewModel: ObservableObject {
     func getAvatar() -> String {
         return avatarChoose
     }
+    
+    func chooseAvatar(avatar: String) {
+        avatarChoose = avatar
+    }
 }

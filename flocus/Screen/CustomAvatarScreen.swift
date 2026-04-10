@@ -30,7 +30,7 @@ struct CustomAvatarScreen: View {
                             .tag(i)
                     }
                 }
-                .onChange(of: selectedTab) { newValue in
+                .onChange(of: selectedTab) { _, newValue in
                     selectedAvatar = imageList[newValue]
                 }
                 .frame(height: 280)
