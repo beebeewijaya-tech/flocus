@@ -9,7 +9,6 @@ import SwiftUI
 import Combine
 import ActivityKit
 
-// MARK: - TimerViewModel
 
 @MainActor
 class TimerViewModel: ObservableObject {
@@ -26,7 +25,7 @@ class TimerViewModel: ObservableObject {
     var timerLiveActivity: TimerLiveActivityService
     var familyControlViewModel: FamilyControlViewModel
 
-    // MARK: - Persistence
+    // MARK: - Storage
 
     @AppStorage("timerEndDate") var timerEndDate: Double = 0
 
@@ -98,8 +97,6 @@ class TimerViewModel: ObservableObject {
             await self.timerLiveActivity.stopLiveActivity()
         }
     }
-
-    // MARK: - Resume
 
     func checkAndResumeTimer() {
         let targetDate = Date(timeIntervalSince1970: timerEndDate)

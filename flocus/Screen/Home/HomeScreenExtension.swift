@@ -12,6 +12,7 @@ extension HomeScreen {
     var homeToolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             if !isEditingMode {
+                // MARK: - Pulldown Btn
                 Menu("", systemImage: "gear") {
                     Button("Custom Avatar") { showCustomAvatar = true }
                     Button("Custom Music") { showCustomMusic = true }
@@ -20,6 +21,7 @@ extension HomeScreen {
             }
         }
         ToolbarItemGroup(placement: .topBarTrailing) {
+            // MARK: - Edit True
             if isEditingMode {
                 Button {
                     isEditingMode = false
@@ -28,6 +30,7 @@ extension HomeScreen {
                     Image(systemName: "checkmark")
                 }
             } else {
+                // MARK: - Edit False
                 Button {
                     isEditingMode = true
                     editMode = .active

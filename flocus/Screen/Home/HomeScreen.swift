@@ -37,8 +37,10 @@ struct HomeScreen: View {
                 Color("Secondary").ignoresSafeArea()
 
                 if taskViewModel.isEmpty(tasks: tasks) {
+                    // MARK: - Empty State
                     HomeEmptyView()
                 } else {
+                    // MARK: - Task List
                     HomeTaskListView(
                         tasks: tasks.filter { task in !task.isDone },
                         isEditingMode: isEditingMode,
@@ -48,21 +50,10 @@ struct HomeScreen: View {
                     )
                 }
             }
+            // MARK: - Toolbar
             .toolbar { homeToolbar }
             .environment(\.editMode, $editMode)
-            .onChange(of: tasks) {
-                taskViewModel.save()
-                if tasks.isEmpty || tasks.allSatisfy({ task in task.isDone }) {
-                    isEditingMode = false
-                    editMode = .inactive
-                }
-            }
-            .onAppear {
-                if tasks.isEmpty || tasks.allSatisfy({ task in task.isDone }) {
-                    isEditingMode = false
-                    editMode = .inactive
-                }
-            }
+            // MARK: - Alert system
             .alert("Add your task!", isPresented: $showAddTask) {
                 TextField("Input Task", text: $taskInput)
                 Button("Cancel", role: .cancel) { taskInput = "" }
@@ -105,97 +96,24 @@ struct HomeScreen: View {
                     .presentationDetents([.medium])
                     .environmentObject(familyControlViewModel)
             }
-        }
-    }
-}
-
-// MARK: - Empty State
-
-struct HomeEmptyView: View {
-    var body: some View {
-        VStack(spacing: 0) {
-            MascotSpeechBubble(message: "Add a task to get started")
-                .padding(.top, 40)
-
-            Image("Mascot")
-                .resizable()
-                .frame(width: 300, height: 300)
-                .padding(.top, -20)
-
-            Text("Let's finish your tasks one at a time!")
-                .font(.system(size: 18, weight: .bold))
-                .foregroundColor(Color("Primary"))
-
-            Spacer()
-        }
-    }
-}
-
-// MARK: - Task List
-
-struct HomeTaskListView: View {
-    let tasks: [TaskModel]
-    let isEditingMode: Bool
-    let onDelete: (TaskModel) -> Void
-    let onMove: (IndexSet, Int) -> Void
-    let onStartTask: () -> Void
-
-    var body: some View {
-        VStack(spacing: 0) {
-            SectionHeader(
-                title: "Here's your task today!",
-                subtitle: "Start from the top and work your way down!"
-            )
-            .padding(.top, 16)
-            .padding(.bottom, 12)
-
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white)
-                .overlay {
-                    List {
-                        ForEach(Array(tasks.enumerated()), id: \.element.id) { index, task in
-                            HStack {
-                                if isEditingMode {
-                                    TextField("Edit Task", text: Binding(
-                                        get: { task.name },
-                                        set: { newName in task.name = newName }
-                                    ))
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-
-                                    Button {
-                                        onDelete(task)
-                                    } label: {
-                                        Image(systemName: "trash")
-                                            .foregroundStyle(.red)
-                                    }
-                                } else {
-                                    Text("\(index + 1). \(task.name)")
-                                        .foregroundColor(Color("Primary"))
-                                    Spacer()
-                                }
-                            }
-                            .listRowBackground(Color.white)
-                            .listRowSeparatorTint(Color.gray.opacity(0.3))
-                            .listRowSeparator(tasks.first?.id == task.id ? .hidden : .visible, edges: .top)
-                            .listRowSeparator(tasks.last?.id == task.id ? .hidden : .visible, edges: .bottom)
-                        }
-                        .onMove(perform: onMove)
-                    }
-                    .listStyle(.plain)
-                    .scrollContentBackground(.hidden)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+            // MARK: - Event Lifecycle
+            .onChange(of: tasks) {
+                taskViewModel.save()
+                if tasks.isEmpty || tasks.allSatisfy({ task in task.isDone }) {
+                    isEditingMode = false
+                    editMode = .inactive
                 }
-                .padding(.horizontal, 24)
-
-            PrimaryButton(title: "Start Task") {
-                onStartTask()
             }
-            .padding(.vertical, 16)
-            .disabled(isEditingMode)
-            .opacity(isEditingMode ? 0.5 : 1)
+            .onAppear {
+                if tasks.isEmpty || tasks.allSatisfy({ task in task.isDone }) {
+                    isEditingMode = false
+                    editMode = .inactive
+                }
+            }
         }
     }
 }
+
 
 #Preview {
     let container = try! ModelContainer(for: TaskModel.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))

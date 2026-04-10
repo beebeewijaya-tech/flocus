@@ -9,7 +9,6 @@ import SwiftUI
 import SwiftData
 import Combine
 
-// MARK: - TaskViewModel
 
 @MainActor
 class TaskViewModel: ObservableObject {
@@ -22,24 +21,36 @@ class TaskViewModel: ObservableObject {
     }
     
     // MARK: - CRUD
+    func getCurrentTask(tasks: [TaskModel]) -> TaskModel? {
+        return tasks.first(where: { task in !task.isDone })
+    }
     
     func addTask(name: String) {
+        // INSERTING into the swiftdata
         guard !name.isEmpty else { return }
         context.insert(TaskModel(name: name))
     }
     
     func deleteTask(_ task: TaskModel) {
+        // DELETE record in the swiftdata
         context.delete(task)
         try? context.save()
     }
     
     func markDoneTask(_ task: TaskModel) {
+        // MARK the task done
         task.isDone.toggle()
         try? context.save()
     }
     
     func clear(tasks: [TaskModel]) {
+        // DELETE all tasks
         tasks.forEach { task in context.delete(task) }
+        try? context.save()
+    }
+    
+    func save() {
+        // SAVE into the swiftdata
         try? context.save()
     }
     
@@ -55,19 +66,8 @@ class TaskViewModel: ObservableObject {
         try? context.save()
     }
     
-    // MARK: - Persistence
     
-    func save() {
-        try? context.save()
-    }
-    
-    // MARK: - Get
-    
-    func getCurrentTask(tasks: [TaskModel]) -> TaskModel? {
-        return tasks.first(where: { task in !task.isDone })
-    }
-    
-    
+    // MARK: - isEmpty
     func isEmpty(tasks: [TaskModel]) -> Bool {
         return tasks.isEmpty || tasks.allSatisfy({ task in task.isDone })
     }

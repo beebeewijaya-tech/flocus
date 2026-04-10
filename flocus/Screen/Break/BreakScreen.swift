@@ -1,4 +1,4 @@
-//
+C//
 //  CongratsScreen.swift
 //  flocus
 //
@@ -64,7 +64,7 @@ struct BreakScreen: View {
                     color: Color("Primary")
                 )
                 
-                Button("Start Early") {
+                PrimaryButton(title: "Start Early") {
                     endBreak()
                 }
                 .frame(width: 100, height: 40)

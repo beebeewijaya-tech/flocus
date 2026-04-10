@@ -21,6 +21,7 @@ struct ExcludeApp: View {
     @EnvironmentObject var familyControlViewModel: FamilyControlViewModel
 
 
+    // MARK: - View
     var body: some View {
         Modal(content: {
             VStack{
