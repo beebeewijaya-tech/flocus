@@ -37,7 +37,7 @@ class TaskViewModel: ObservableObject {
         try? context.save()
     }
     
-    func markDoneTask(_ task: TaskModel) {
+    func markDoneToggleTask(_ task: TaskModel) {
         // MARK the task done
         task.isDone.toggle()
         try? context.save()

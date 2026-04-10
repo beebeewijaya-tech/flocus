@@ -33,6 +33,6 @@ struct GifReaderService : UIViewRepresentable {
 
 struct gifReader_Previews: PreviewProvider {
     static var previews: some View {
-        GifReaderService(gifName: "CactusGif")
+        GifReaderService(gifName: "LavenderGif")
     }
 }

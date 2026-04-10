@@ -43,6 +43,7 @@ class TimerViewModel: ObservableObject {
     // MARK: - Formatting
 
     func updateSeconds(seconds: Int) {
+        self.initialSeconds = seconds
         self.seconds = seconds
     }
 
@@ -86,10 +87,6 @@ class TimerViewModel: ObservableObject {
         timer?.cancel()
         timer = nil
         timerEndDate = 0
-
-        if self.seconds == 0 {
-            self.seconds = self.initialSeconds
-        }
 
         self.familyControlViewModel.unlockApps()
 
