@@ -19,7 +19,7 @@ extension View {
                 showTaskFinished.wrappedValue = false
                 parentAlert.wrappedValue = false
             }
-            Button("Would you like to take a break?") {
+            Button("Yes") {
                 pageState.wrappedValue = .rest
             }
         } message: {
