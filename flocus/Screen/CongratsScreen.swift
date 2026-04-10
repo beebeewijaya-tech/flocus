@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CongratsScreen: View {
+    @EnvironmentObject var avatarViewModel: AvatarViewModel
     @Binding var isPresented: Bool
     @Binding var isPickTimerPresented: Bool
     
@@ -29,8 +30,11 @@ struct CongratsScreen: View {
                     .font(.system(size: 30, weight: .black))
                     .foregroundStyle(Color("Primary"))
                 
-                Image("Cactus")
-                    .resizable()
+                ZStack {
+                    GifReaderService(gifName: "\(avatarViewModel.avatarChoose)Gif")
+                           .frame(width: 300, height: 300)
+                           .clipped()
+                   }
                     .frame(width: 144, height: 157)
                 Text("All Tasks have been")
                     .padding(.top, 35)
@@ -56,4 +60,5 @@ struct CongratsScreen: View {
 }
 #Preview {
     CongratsScreen(isPresented: .constant(true), isPickTimerPresented: .constant(true))
+        .environmentObject(AvatarViewModel())
 }

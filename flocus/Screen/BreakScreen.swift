@@ -44,13 +44,15 @@ struct BreakScreen: View {
                     .frame(maxWidth: .infinity, maxHeight: 300)
                 Text("Break Time !")
                     .padding(.top, 20)
-                    .padding(.bottom, 35)
+                    .padding(.bottom, 30)
                     .font(.system(size: 30, weight: .black))
                     .foregroundStyle(Color("Primary"))
-                
-                Image("Cactus")
-                    .resizable()
-                    .frame(width: 144, height: 157)
+                ZStack {
+                    GifReaderService(gifName: "\(avatarViewModel.avatarChoose)Gif")
+                           .frame(width: 300, height: 300)
+                           .clipped()
+                   }
+                   .frame(width: 144, height: 157)
                 Text("Starting \"\(getCurrentTask())\" at...")
                     .padding(.top, 35)
                     .font(.system(size: 24))
@@ -85,5 +87,12 @@ struct BreakScreen: View {
 }
 
 #Preview {
+    let container = try! ModelContainer(for: TaskModel.self)
+    let familyControlViewModel = FamilyControlViewModel()
+
     BreakScreen(isPresented: .constant(true))
+        .environmentObject(TaskViewModel(context: container.mainContext))
+        .environmentObject(familyControlViewModel)
+        .environmentObject(TimerViewModel(seconds: 300, familyControlViewModel: familyControlViewModel))
+        .environmentObject(AvatarViewModel())
 }
