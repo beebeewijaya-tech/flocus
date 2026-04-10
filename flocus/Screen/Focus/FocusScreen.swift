@@ -10,10 +10,6 @@ import SwiftData
 import AVFoundation
 
 struct FocusScreen: View {
-    // MARK: - Play Music
-    @AppStorage("selected_music_file") var selectedMusic: String = "BirdSound"
-    @State private var audioPlayer: AVAudioPlayer?
-    
     // MARK: - Model
     @Environment(\.modelContext) private var context
     @Query(sort: \TaskModel.createdAt) var tasks: [TaskModel]
@@ -31,6 +27,12 @@ struct FocusScreen: View {
     @State var longPressTask: Task<Void, Never>? = nil
     @State var showTimerEnded: Bool = false
     @State var currentTask: String = ""
+    @State private var audioPlayer: AVAudioPlayer?
+    @State private var existingTask: TaskModel? // this is for "Continue after break" purpose
+    @State private var isSoundOn = true
+
+    // MARK: - Storage
+    @AppStorage("selected_music_file") var selectedMusic: String = "BirdSound"
     
     // MARK: - ViewModels
     
@@ -110,7 +112,7 @@ struct FocusScreen: View {
         
     private func finishTask() {
         if let curTask = taskViewModel.getCurrentTask(tasks: tasks) {
-            taskViewModel.markDoneTask(curTask)
+            taskViewModel.markDoneToggleTask(curTask)
         }
     }
     
@@ -144,19 +146,40 @@ struct FocusScreen: View {
         }
     }
     
+    private func getSoundIcon() -> String {
+        if isSoundOn {
+            return "speaker.wave.1.fill"
+        } else {
+            return "speaker.slash.fill"
+        }
+    }
+    
+    private func toggleSound() {
+        if isSoundOn {
+            audioPlayer?.stop()
+        } else {
+            playBackgroundMusic()
+        }
+        isSoundOn.toggle()
+    }
+    
     // MARK: - Body
     
     var body: some View {
         VStack {
+            HStack {
+                Spacer()
+                Image(systemName: getSoundIcon())
+                    .padding()
+                    .glassEffect()
+                    .foregroundColor(.black)
+                    .onTapGesture { toggleSound() }
+            }
+            .padding()
             CurrentTaskHeader(taskName: currentTask)
-                .padding(.top, 70)
-            
+                .padding(.top, 20)
             TimerDisplay(time: timerViewModel.renderTimer())
-            
-            Image(avatarViewModel.getAvatar())
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 200)
+            FocusAvatar(avatarName: avatarViewModel.getAvatar())
             
             VStack {
                 PrimaryButton(title: "Finish") {
@@ -180,10 +203,13 @@ struct FocusScreen: View {
             .padding(.top, 50)
         }
         .taskFinishedAlert(parentAlert: $isPresented, pageState: $pageState, showTaskFinished: $showTaskFinished)
-        .timesUpAlert(parentAlert: $isPresented, pageState: $pageState, showTimerEnded: $showTimerEnded)
+        .timesUpAlert(parentAlert: $isPresented, pageState: $pageState, showTimerEnded: $showTimerEnded, continueAfterBreakAction: {
+            taskViewModel.markDoneToggleTask(existingTask!) 
+        })
         // MARK: - Event Lifecycle
         .onAppear {
             currentTask = taskViewModel.getCurrentTask(tasks: tasks)?.name ?? ""
+            existingTask = taskViewModel.getCurrentTask(tasks: tasks) ?? nil
             runTimer()
             playBackgroundMusic()
         }
@@ -195,6 +221,12 @@ struct FocusScreen: View {
             if finishAllTasks() { return }
             
             if newValue == 0 {
+                
+                // if finishAllTasks is "true" then just return
+                self.finishTask()
+                if finishAllTasks() { return }
+                
+                self.stopTimer()
                 showTimerEnded = true
             }
         }

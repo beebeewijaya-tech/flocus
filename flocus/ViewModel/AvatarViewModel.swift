@@ -16,7 +16,7 @@ class AvatarViewModel: ObservableObject {
         return avatarChoose
     }
     
-    func chooseAvatar(avatar: String) {
+    func saveAvatar(avatar: String) {
         avatarChoose = avatar
     }
 }
