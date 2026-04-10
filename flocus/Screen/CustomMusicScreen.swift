@@ -16,7 +16,8 @@ struct Track {
 struct CustomMusicScreen: View {
     @Binding var isPresented: Bool
     @State var selectedTab = 0
-    @State var selectedMusic: String = "BirdSound"
+//    @State var selectedMusic: String = "BirdSound"
+    @AppStorage("selected_music_file") var selectedMusic: String = "BirdSound"
     @State var audioPlayer: AVAudioPlayer?
     
     let musicList: [Track] = [
@@ -40,7 +41,7 @@ struct CustomMusicScreen: View {
                         VStack {
                             Image("\(musicList[i].fileName)")
                                 .resizable()
-                                .frame(width: 150, height: 150)
+                                .frame(width: 120, height: 120)
                             
                             Text(musicList[i].title)
                                 .font(.title2)
@@ -55,15 +56,15 @@ struct CustomMusicScreen: View {
                         saveMusic(newTrack)
                     }
                 }
-                .frame(height: 300)
-                .padding(.bottom, 20)
+                .frame(height: 240)
                 .tabViewStyle(.page)
                 .indexViewStyle(.page(backgroundDisplayMode: .always))
                 
                 List(0..<4) { i in
                     musicRow(track: musicList[i], idx: i)
                 }
-                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+                .background(Color("Secondary"))
             }
             .onDisappear {
                 audioPlayer?.stop()
