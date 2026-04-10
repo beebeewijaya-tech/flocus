@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CustomAvatarScreen: View {
+    @EnvironmentObject var avatarViewModel: AvatarViewModel
     @Binding var isPresented: Bool
     @State var selectedTab = 0
     @State var selectedAvatar: String = "Cactus"
@@ -73,6 +74,7 @@ struct CustomAvatarScreen: View {
     
     func saveAvatar(_ name: String) {
         selectedAvatar = name
+        avatarViewModel.avatarChoose = name
     }
 }
 
