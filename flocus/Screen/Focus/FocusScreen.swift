@@ -204,9 +204,19 @@ struct FocusScreen: View {
             .padding(.top, 50)
         }
         .taskFinishedAlert(parentAlert: $isPresented, pageState: $pageState, showTaskFinished: $showTaskFinished)
-        .timesUpAlert(parentAlert: $isPresented, pageState: $pageState, showTimerEnded: $showTimerEnded, continueAfterBreakAction: {
-            taskViewModel.markDoneToggleTask(existingTask!) 
-        })
+        .timesUpAlert(
+            parentAlert: $isPresented,
+            pageState: $pageState,
+            showTimerEnded: $showTimerEnded,
+            finishAction: {
+                self.finishTask()
+                if taskViewModel.isEmpty(tasks: tasks) {
+                    self.pageState = .success
+                } else {
+                    self.pageState = .rest
+                }
+            }
+        )
         // MARK: - Event Lifecycle
         .onAppear {
             currentTask = taskViewModel.getCurrentTask(tasks: tasks)?.name ?? ""
@@ -217,16 +227,8 @@ struct FocusScreen: View {
         .onDisappear {
             audioPlayer?.stop()
         }
-        .onChange(of: timerViewModel.seconds) { _, newValue in
-            // if finishAllTasks is "true" then just return
-            if finishAllTasks() { return }
-            
+        .onChange(of: timerViewModel.seconds) { _, newValue in            
             if newValue == 0 {
-                
-                // if finishAllTasks is "true" then just return
-                self.finishTask()
-                if finishAllTasks() { return }
-                
                 self.stopTimer()
                 showTimerEnded = true
             }

@@ -34,6 +34,7 @@ extension View {
         showTimerEnded: Binding<Bool>,
         moreTimeAction: @escaping () -> Void = {},
         continueAfterBreakAction: @escaping () -> Void = {},
+        finishAction: @escaping () -> Void = {}
     ) -> some View {
         self.alert("Time's up!", isPresented: showTimerEnded) {
             Button("More Time") {
@@ -46,7 +47,7 @@ extension View {
                 showTimerEnded.wrappedValue = false
             }
             Button("Finish") {
-                pageState.wrappedValue = .rest
+                finishAction()
                 showTimerEnded.wrappedValue = false
             }
         } message: {
