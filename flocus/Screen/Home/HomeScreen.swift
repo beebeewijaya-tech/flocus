@@ -29,7 +29,6 @@ struct HomeScreen: View {
     @EnvironmentObject var taskViewModel: TaskViewModel
     @EnvironmentObject var timerViewModel: TimerViewModel
     @EnvironmentObject var avatarViewModel: AvatarViewModel
-    
 
     var body: some View {
         NavigationStack {
@@ -105,6 +104,9 @@ struct HomeScreen: View {
                 }
             }
             .onAppear {
+                familyControlViewModel.unlockApps()
+                timerViewModel.stopTimer()
+
                 if taskViewModel.isEmpty(tasks: tasks) {
                     isEditingMode = false
                     editMode = .inactive
