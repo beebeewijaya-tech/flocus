@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import Lottie
 
 struct CongratsScreen: View {
     // MARK: - Binding
     @Binding var isPresented: Bool
     @Binding var isPickTimerPresented: Bool
+    @State private var playBackMode: LottiePlaybackMode = .playing(.fromFrame(0, toFrame: 100, loopMode: .loop))
     
     // MARK: - ViewModel
     @EnvironmentObject var avatarViewModel: AvatarViewModel
@@ -37,12 +39,13 @@ struct CongratsScreen: View {
                     .foregroundStyle(Color("Primary"))
                 
                 ZStack {
-                    GifReaderService(gifName: "\(avatarViewModel.avatarChoose)Gif")
-                           .frame(width: 300, height: 300)
-                           .clipped()
+                    Avatar(
+                        playBackMode: $playBackMode,
+                        avatarName: "\(avatarViewModel.getAvatar())Shake",
+                    )
                    }
                     .frame(width: 144, height: 157)
-                Text("All Tasks have been")
+                Text("All tasks have been")
                     .padding(.top, 35)
                     .font(.system(size: 24))
                     .foregroundStyle(Color("Primary"))

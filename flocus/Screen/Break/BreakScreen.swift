@@ -7,7 +7,7 @@
 
 import SwiftUI
 import SwiftData
-
+import Lottie
 struct BreakScreen: View {
     // MARK: - Model
     @Environment(\.modelContext) private var context
@@ -15,6 +15,7 @@ struct BreakScreen: View {
     
     // MARK: - State
     @Binding var isPresented: Bool
+    @State private var playBackMode: LottiePlaybackMode = .playing(.fromFrame(0, toFrame: 100, loopMode: .loop))
     
     // MARK: - ViewModels
     @EnvironmentObject var avatarViewModel: AvatarViewModel
@@ -42,15 +43,16 @@ struct BreakScreen: View {
             VStack {
                 Image("Banner")
                     .frame(maxWidth: .infinity, maxHeight: 300)
-                Text("Break Time !")
+                Text("BREAK TIME!")
                     .padding(.top, 20)
                     .padding(.bottom, 30)
                     .font(.system(size: 30, weight: .black))
                     .foregroundStyle(Color("Primary"))
                 ZStack {
-                    GifReaderService(gifName: "\(avatarViewModel.avatarChoose)Gif")
-                           .frame(width: 300, height: 300)
-                           .clipped()
+                    Avatar(
+                        playBackMode: $playBackMode,
+                        avatarName: "\(avatarViewModel.getAvatar())Shake",
+                    )
                    }
                    .frame(width: 144, height: 157)
                 Text("Starting \"\(getCurrentTask())\" at...")
