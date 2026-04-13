@@ -170,6 +170,7 @@ struct FocusScreen: View {
             HStack {
                 Spacer()
                 Image(systemName: getSoundIcon())
+                    .frame(width: 20, height: 20)
                     .padding()
                     .glassEffect()
                     .foregroundColor(.black)
