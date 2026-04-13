@@ -13,6 +13,7 @@ struct Avatar: View {
     @Binding var playBackMode: LottiePlaybackMode
     var avatarName: String
     var onFinish: ((Bool) -> Void)? = nil
+    var height: CGFloat = 200
 
     var body: some View {
         VStack {
@@ -22,7 +23,7 @@ struct Avatar: View {
                     onFinish?(completed)
                 }
         }
-        .frame(height: 200)
+        .frame(height: height)
     }
 }
 

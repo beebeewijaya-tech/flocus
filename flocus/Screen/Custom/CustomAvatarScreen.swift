@@ -16,7 +16,6 @@ struct CustomAvatarScreen: View {
     // MARK: - State
     @State private var selectedTab = 0
     @State private var selectedAvatar: String = "Cactus"
-    @State private var playBackMode: LottiePlaybackMode = .playing(.fromFrame(0, toFrame: 100, loopMode: .loop))
     
     // MARK: - Properties
     var imageList: Array = ["Cactus", "Lavender", "PalmTree", "SnakePlant"]
@@ -56,18 +55,17 @@ struct CustomAvatarScreen: View {
     }
     
     @ViewBuilder
-    func avatarDisplay(icon:String, isSelected: Bool) -> some View {
-            if isSelected {
-                Avatar(
-                    playBackMode: $playBackMode,
-                    avatarName: "\(icon)Shake",
-                )
-            } else {
-                Image(icon)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 200)
-            }
+    func avatarDisplay(icon: String, index: Int) -> some View {
+        let height: CGFloat = icon == "PalmTree" ? 200 : 300
+        Avatar(
+            playBackMode: .constant(
+                index == selectedTab
+                ? .playing(.fromFrame(0, toFrame: 100, loopMode: .loop))
+                : .paused(at: .frame(0))
+            ),
+            avatarName: "\(icon)Shake",
+            height: height
+        )
     }
     
     // MARK: - View
@@ -84,7 +82,7 @@ struct CustomAvatarScreen: View {
                     ForEach(0..<4) { i in
                         avatarDisplay(
                             icon: imageList [i],
-                            isSelected: selectedAvatar == imageList[i]
+                            index: i
                         ).tag(i)
                     }
                 }
