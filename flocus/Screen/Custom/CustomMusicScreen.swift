@@ -71,6 +71,10 @@ struct CustomMusicScreen: View {
         }
     }
     
+    func getMusic() {
+        selectedTab = self.musicList.firstIndex(where: { $0.fileName == selectedMusic }) ?? 0
+    }
+    
     // MARK: - View
     var body: some View {
         Modal(content: {
@@ -79,7 +83,7 @@ struct CustomMusicScreen: View {
                     .font(.title)
                     .foregroundColor(Color("Primary"))
                     .fontWeight(.bold)
-                    
+                
                 
                 TabView(selection: $selectedTab) {
                     ForEach(0..<4) { i in
@@ -113,7 +117,11 @@ struct CustomMusicScreen: View {
             }
             .onDisappear {
                 audioPlayer?.stop()
-            }}, isPresented: $isPresented)
+            }
+            .onAppear {
+                getMusic()
+            }
+        }, isPresented: $isPresented)
     }
 }
 
