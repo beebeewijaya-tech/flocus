@@ -82,11 +82,6 @@ struct CustomAvatarScreen: View {
                             icon: imageList [i],
                             isSelected: selectedAvatar == imageList[i]
                         ) .tag(i)
-//                        Image(imageList[i])
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(height: 200)
-//                            .tag(i)
                     }
                 }
                 .onChange(of: selectedTab) { _, newValue in
