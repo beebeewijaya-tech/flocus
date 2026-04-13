@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import Lottie
 
 struct CustomAvatarScreen: View {
     // MARK: - Binding
@@ -15,6 +16,7 @@ struct CustomAvatarScreen: View {
     // MARK: - State
     @State private var selectedTab = 0
     @State private var selectedAvatar: String = "Cactus"
+    @State private var playBackMode: LottiePlaybackMode = .playing(.fromFrame(0, toFrame: 100, loopMode: .loop))
     
     // MARK: - Properties
     var imageList: Array = ["Cactus", "Lavender", "PalmTree", "SnakePlant"]
@@ -56,8 +58,10 @@ struct CustomAvatarScreen: View {
     @ViewBuilder
     func avatarDisplay(icon:String, isSelected: Bool) -> some View {
             if isSelected {
-            GifReaderService(gifName: "\(icon)Gif")
-                    .frame( width: 200)
+                Avatar(
+                    playBackMode: $playBackMode,
+                    avatarName: "\(icon)Shake",
+                )
             } else {
                 Image(icon)
                     .resizable()
@@ -81,12 +85,12 @@ struct CustomAvatarScreen: View {
                         avatarDisplay(
                             icon: imageList [i],
                             isSelected: selectedAvatar == imageList[i]
-                        ) .tag(i)
+                        ).tag(i)
                     }
                 }
                 .onChange(of: selectedTab) { _, newValue in
-                    saveAvatar(imageList[newValue])
-                }
+                    saveAvatar(imageList[newValue])}
+                .clipped()
                 .frame(height: 280)
                 .padding(.bottom, 50)
                 .tabViewStyle(.page)
