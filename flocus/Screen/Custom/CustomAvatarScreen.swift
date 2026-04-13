@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CustomAvatarScreen: View {
     // MARK: - Binding
@@ -52,6 +53,19 @@ struct CustomAvatarScreen: View {
         .buttonStyle(.plain)
     }
     
+    @ViewBuilder
+    func avatarDisplay(icon:String, isSelected: Bool) -> some View {
+            if isSelected {
+            GifReaderService(gifName: "\(icon)Gif")
+                    .frame( width: 200)
+            } else {
+                Image(icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 200)
+            }
+    }
+    
     // MARK: - View
     
     var body: some View {
@@ -64,11 +78,15 @@ struct CustomAvatarScreen: View {
                 
                 TabView(selection: $selectedTab) {
                     ForEach(0..<4) { i in
-                        Image(imageList[i])
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 200)
-                            .tag(i)
+                        avatarDisplay(
+                            icon: imageList [i],
+                            isSelected: selectedAvatar == imageList[i]
+                        ) .tag(i)
+//                        Image(imageList[i])
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: 200)
+//                            .tag(i)
                     }
                 }
                 .onChange(of: selectedTab) { _, newValue in
@@ -100,4 +118,5 @@ struct CustomAvatarScreen: View {
 
 #Preview {
     CustomAvatarScreen(isPresented: .constant(true))
+        .environmentObject(AvatarViewModel())
 }
