@@ -15,12 +15,12 @@ struct MascotSpeechBubble: View {
             Image("bubblechat")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 300, height: 100)
+                .frame(width: 250, height: 100)
             Text(message)
                 .font(.system(size: 16))
                 .foregroundColor(Color("Primary"))
-                .padding(.bottom, 6)
-                .padding(.trailing, 6)
+                .padding(.bottom, 10)
+                .padding(.trailing, -10)
         }
     }
 }
