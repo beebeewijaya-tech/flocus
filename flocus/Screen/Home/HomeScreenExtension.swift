@@ -37,7 +37,7 @@ extension HomeScreen {
                 } label: {
                     Image(systemName: "pencil")
                 }
-                .disabled(tasks.isEmpty)
+                .disabled(taskViewModel.isEmpty(tasks: tasks))
                 Button(action: { showAddTask = true }) {
                     Image(systemName: "plus")
                 }

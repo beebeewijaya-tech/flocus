@@ -99,13 +99,13 @@ struct HomeScreen: View {
             // MARK: - Event Lifecycle
             .onChange(of: tasks) {
                 taskViewModel.save()
-                if tasks.isEmpty || tasks.allSatisfy({ task in task.isDone }) {
+                if taskViewModel.isEmpty(tasks: tasks) {
                     isEditingMode = false
                     editMode = .inactive
                 }
             }
             .onAppear {
-                if tasks.isEmpty || tasks.allSatisfy({ task in task.isDone }) {
+                if taskViewModel.isEmpty(tasks: tasks) {
                     isEditingMode = false
                     editMode = .inactive
                 }
