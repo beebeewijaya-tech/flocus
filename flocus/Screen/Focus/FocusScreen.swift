@@ -12,6 +12,7 @@ import AVFoundation
 struct FocusScreen: View {
     // MARK: - Model
     @Environment(\.modelContext) private var context
+    @Environment(\.scenePhase) private var scenePhase
     @Query(sort: \TaskModel.createdAt) var tasks: [TaskModel]
     
     // MARK: - Bindings
@@ -224,13 +225,17 @@ struct FocusScreen: View {
             runTimer()
             playBackgroundMusic()
         }
-        .onDisappear {
-            audioPlayer?.stop()
-        }
         .onChange(of: timerViewModel.seconds) { _, newValue in            
             if newValue == 0 {
                 self.stopTimer()
                 showTimerEnded = true
+            }
+        }
+        .onChange(of: scenePhase) { _, newValue in
+            // detecting if app going to background
+            // if yes, just don't do ABORT
+            if newValue != .active {
+                resetAbort()
             }
         }
     }
