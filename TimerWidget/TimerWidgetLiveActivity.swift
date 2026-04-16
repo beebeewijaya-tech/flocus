@@ -11,7 +11,7 @@ import SwiftUI
 
 struct TimerWidgetAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
-        var imageTree: String
+        var taskName: String
         var quotes: String
         var endDate: Date
     }
@@ -34,7 +34,7 @@ struct LockScreenView: View {
                         .frame(width: 70, height: 70)
                         .clipShape(Circle())
                     
-                    Image("Cactus")
+                    Image("Mascot")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 60, height: 60)
@@ -61,7 +61,7 @@ struct LockScreenView: View {
                         Text("Study")
                             .font(.caption)
                             .foregroundStyle(.white)
-                        Text("Task: Tugas 1")
+                        Text("Task: \(context.state.taskName)")
                             .font(.caption)
                             .foregroundStyle(.white)
                     }
@@ -111,7 +111,7 @@ struct TimerWidgetLiveActivity: Widget {
                                     .frame(width: 70, height: 70)
                                     .clipShape(Circle())
                                 
-                                Image("Cactus")
+                                Image("Mascot")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 60, height: 60)
@@ -135,7 +135,7 @@ struct TimerWidgetLiveActivity: Widget {
                                     Text("Study")
                                         .font(.caption)
                                         .foregroundStyle(.white)
-                                    Text("Task: Tugas 1")
+                                    Text("Task: \(context.state.taskName)")
                                         .font(.caption)
                                         .foregroundStyle(.white)
                                 }
@@ -177,12 +177,12 @@ struct TimerWidgetLiveActivity: Widget {
 #Preview("Timer Lock Screen", as: .content, using: TimerWidgetAttributes()) {
     TimerWidgetLiveActivity()
 } contentStates: {
-    TimerWidgetAttributes.ContentState(imageTree: "🌳", quotes: "Stop Looking at screen!", endDate: Date().addingTimeInterval(TimeInterval(300)))
+    TimerWidgetAttributes.ContentState(taskName: "Tugas 1", quotes: "Stop Looking at screen!", endDate: Date().addingTimeInterval(TimeInterval(300)))
 }
 
 
 #Preview("Timer Island", as: .dynamicIsland(.compact), using: TimerWidgetAttributes()) {
     TimerWidgetLiveActivity()
 } contentStates: {
-    TimerWidgetAttributes.ContentState(imageTree: "🌳", quotes: "Stop Looking at screen!", endDate: Date().addingTimeInterval(TimeInterval(300)))
+    TimerWidgetAttributes.ContentState(taskName: "Tugas 1", quotes: "Stop Looking at screen!", endDate: Date().addingTimeInterval(TimeInterval(300)))
 }

@@ -27,13 +27,13 @@ class TimerLiveActivityService {
         }
     }
     
-    func startTimerLiveActivity(until: Date) {
+    func startTimerLiveActivity(until: Date, taskName: String) {
         /**
          start live activity to show the timer on the island and also on the lockscreen
          */
         let attribute = TimerWidgetAttributes()
         let state = TimerWidgetAttributes.ContentState(
-            imageTree: "",
+            taskName: taskName,
             quotes: "Stop Looking at screen!",
             endDate: until
         )
