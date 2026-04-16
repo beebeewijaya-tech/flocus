@@ -55,14 +55,14 @@ class TimerViewModel: ObservableObject {
 
     // MARK: - Timer Control
 
-    func startTimer() {
+    func startTimer(taskName: String = "") {
         timer?.cancel()
         timer = nil
 
         Task {
             await self.timerLiveActivity.stopLiveActivity()
             let until = Date().addingTimeInterval(TimeInterval(self.seconds))
-            self.timerLiveActivity.startTimerLiveActivity(until: until)
+            self.timerLiveActivity.startTimerLiveActivity(until: until, taskName: taskName)
             self.timerLiveActivity.observeLiveActivity()
             timerEndDate = until.timeIntervalSince1970
             self.familyControlViewModel.lockApps()

@@ -68,7 +68,7 @@ struct FocusScreen: View {
     // MARK: - Actions
     
     func runTimer() {
-        timerViewModel.startTimer()
+        timerViewModel.startTimer(taskName: taskViewModel.getCurrentTask(tasks: tasks)?.name ?? "")
     }
     
     func stopTimer() {

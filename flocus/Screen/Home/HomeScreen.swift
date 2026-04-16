@@ -44,7 +44,7 @@ struct HomeScreen: View {
                         tasks: tasks.filter { task in !task.isDone },
                         isEditingMode: isEditingMode,
                         onDelete: { task in taskViewModel.deleteTask(task) },
-                        onMove: { source, destination in taskViewModel.moveTask(tasks: tasks, from: source, to: destination) },
+                        onMove: { source, destination in taskViewModel.moveTask(tasks: tasks.filter { !$0.isDone }, from: source, to: destination) },
                         onStartTask: { showStartTask = true }
                     )
                 }
